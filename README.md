@@ -1,8 +1,3 @@
-# Comprehensive-IT-AI-Portfolio
-5 complex projects that span machine learning, deep learning, data engineering, DevOps/cloud, and analytics.
-
-***
-
 # IT & AI Portfolio Projects
 
 Welcome! This repository is a showcase of five advanced, real-world projects—each representing a different domain in IT and Artificial Intelligence.  
