@@ -12,7 +12,6 @@ Every project is production-oriented, demonstrates best practices, and includes 
 
 - [Overview](#overview)
 - [Project List](#project-list)
-- [Setup Instructions](#setup-instructions)
 - [Project Details](#project-details)
 - [Contact](#contact)
 
