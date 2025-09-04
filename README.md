@@ -1,7 +1,7 @@
 # IT & AI Portfolio Projects
 
 Welcome! This repository showcases six production-ready, complex projects spanning key domains in **Artificial Intelligence** and **IT Infrastructure**.  
-Each project demonstrates code best practices and real-world deployment, with full instructions, demos, and scaling guides.
+Each project demonstrates code best practices and real-world deployment.
 
 ---
 
