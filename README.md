@@ -1,7 +1,9 @@
 # IT & AI Portfolio Projects
 
-Welcome! This repository is a showcase of five advanced, real-world projects—each representing a different domain in IT and Artificial Intelligence.  
-Every project is production-oriented, demonstrates best practices, and includes full code, instructions, and demo resources.
+Welcome! This repository showcases five production-ready, complex projects spanning key domains in **Artificial Intelligence** and **IT Infrastructure**.  
+Each project demonstrates code best practices and real-world deployment, with full instructions, demos, and scaling guides.
+
+---
 
 ## Table of Contents
 
@@ -10,53 +12,66 @@ Every project is production-oriented, demonstrates best practices, and includes 
 - [Project Details](#project-details)
 - [Contact](#contact)
 
-***
+---
 
 ## Overview
 
-This portfolio demonstrates broad technical skill in **Machine Learning**, **Deep Learning**, **Natural Language Processing**, **Data Engineering**, and **DevOps/Cloud Infrastructure**.  
-Each project is built for scalability, reproducibility, and ease of presentation in videos or resumes.
+This portfolio proves expertise across **Machine Learning**, **Deep Learning**, **NLP**, **Data Engineering**, and **Cloud/DevOps Automation**.  
+Projects are modular, scalable, and well-documented for technical presentations and portfolio interviews.
 
-***
+---
 
 ## Project List
 
-| #  | Domain/Focus                 | Project Name                    | Main Technologies         |
-|----|-----------------------------|---------------------------------|--------------------------|
-| 1  | Machine Learning            | Healthcare Risk Classifier      | scikit-learn, Optuna     |
-| 2  | Deep Learning               | Real-Time Face Mask Detector    | TensorFlow, Flask, OpenCV|
-| 3  | NLP                         | Spam & Sentiment Analyzer       | NLTK, LSTM, Flask        |
-| 4  | Data Engineering            | ETL Pipeline with Kafka         | Apache Kafka, Docker, PostgreSQL |
-| 5  | DevOps/Cloud                | Terraform & Docker Automation   | Terraform, Docker, Kubernetes    |
+| #  | Domain/Focus               | Project Name                      | Main Technologies                   |
+|----|---------------------------|-----------------------------------|-------------------------------------|
+| 1  | Machine Learning          | Healthcare Risk Classifier         | scikit-learn, Optuna, SHAP          |
+| 2  | Deep Learning             | Real-Time Face Mask Detector       | TensorFlow, Flask, OpenCV           |
+| 3  | NLP                       | Spam & Sentiment Analyzer          | NLTK, LSTM, Flask                   |
+| 4  | Data Engineering          | ETL Pipeline with Kafka            | Kafka, Docker, PostgreSQL           |
+| 5  | DevOps/Cloud              | Terraform & Docker Automation      | Terraform, Docker, Kubernetes        |
+| 6  | Banking ML/AI             | Fraud Detection App                | Kafka, XGBoost, Flask, Docker, SHAP |
 
-
-***
+---
 
 ## Project Details
 
-### Healthcare Risk Classifier
-Predict diabetes/heart attack risk from clinical data.  
-Includes full ML pipeline: preprocessing, feature engineering, optimization (Optuna), explainability (SHAP), deployment scripts.
+### 1. Healthcare Risk Classifier
+Predicts diabetes/heart attack risk from anonymized clinical datasets.
+- Advanced preprocessing, feature engineering, Optuna optimization, explainability (SHAP), and full deployment scripts.
+- **Demo:** Model explainability dashboard for transparent predictions.
 
-### Real-Time Face Mask Detector
-Deep learning computer vision application for real-time detection using webcam/video feeds.  
-Built with transfer learning (MobileNet/CNN), deployed to a Flask interface.
+### 2. Real-Time Face Mask Detector
+Deep learning computer vision for live detection of face masks in webcam/video streams.
+- Implements MobileNet/CNN transfer learning, OpenCV, Flask for web deployment, real-time alerts.
+- **Demo:** Streamlit/Flask video interface for testing.
 
-### Spam & Sentiment Analyzer
-NLP app for classifying emails/social content using ML and LSTM deep learning.  
-Interactive web app frontend for real-time prediction.
+### 3. Spam & Sentiment Analyzer
+NLP app to classify emails/social media text for spam and sentiment.
+- Naive Bayes, SVM, LSTM (Keras), Flask web interface for interactive classification.
+- Handles imbalanced data, outputs predictions and analytics.
 
-### ETL Pipeline with Kafka
-Data engineering project to stream, transform, and store synthetic financial/sports data.  
-Uses Apache Kafka, Docker, and persistent storage with PostgreSQL.
+### 4. ETL Pipeline with Kafka
+Data engineering pipeline for ingesting, transforming, and storing financial/sports event data.
+- Kafka for streaming, Docker for isolated services, PostgreSQL for persistent analytics.
+- Real-time and batch processing.
 
-### Terraform & Docker Automation
-DevOps/Cloud automation scripts for provisioning and deploying scalable infrastructure.  
-Includes Infrastructure as Code (Terraform), containerization (Docker), and orchestration (Kubernetes).
+### 5. Terraform & Docker Automation
+DevOps suite for automated cloud resource provisioning and CI/CD deployment.
+- Infrastructure as Code (Terraform), container orchestration (Docker, Kubernetes), auto-scaling.
+- Cloud-provider agnostic scripts.
 
-***
+### 6. Banking Fraud Detection App
+AI application for real-time fraud detection and prevention in banking transactions.
+- Real-time ingestion (Kafka), advanced ML (Random Forest, Isolation Forest, XGBoost), SHAP for explainability.
+- Flask dashboard for alerts, Docker/Terraform cloud deployment, compliance-ready logging.
+- End-to-end workflow with simulation, deployment scripts, and dashboards.
+
+
+---
 
 ## Contact
 
-Questions, suggestions, or collaboration interest?  
+Questions, suggestions, or collaboration interest?
 Open an issue or email the maintainer (see profile or repo settings).
+
