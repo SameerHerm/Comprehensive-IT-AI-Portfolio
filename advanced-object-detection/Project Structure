@@ -1,0 +1,82 @@
+advanced-object-detection/
+├── data/
+│   ├── raw/
+│   ├── processed/
+│   ├── annotations/
+│   └── datasets/
+├── models/
+│   ├── pretrained/
+│   ├── trained/
+│   └── checkpoints/
+├── src/
+│   ├── __init__.py
+│   ├── data/
+│   │   ├── __init__.py
+│   │   ├── data_loader.py
+│   │   ├── augmentation.py
+│   │   └── preprocessing.py
+│   ├── models/
+│   │   ├── __init__.py
+│   │   ├── yolo.py
+│   │   ├── rcnn.py
+│   │   ├── ssd.py
+│   │   └── efficientdet.py
+│   ├── training/
+│   │   ├── __init__.py
+│   │   ├── trainer.py
+│   │   └── validator.py
+│   ├── detection/
+│   │   ├── __init__.py
+│   │   ├── detector.py
+│   │   └── utils.py
+│   └── evaluation/
+│       ├── __init__.py
+│       ├── metrics.py
+│       └── visualization.py
+├── web_app/
+│   ├── app.py
+│   ├── static/
+│   │   ├── css/
+│   │   │   └── style.css
+│   │   ├── js/
+│   │   │   └── main.js
+│   │   └── uploads/
+│   └── templates/
+│       ├── index.html
+│       ├── results.html
+│       └── realtime.html
+├── api/
+│   ├── main.py
+│   ├── routes/
+│   │   ├── __init__.py
+│   │   ├── detection.py
+│   │   └── training.py
+│   └── utils/
+│       ├── __init__.py
+│       └── response.py
+├── notebooks/
+│   ├── data_exploration.ipynb
+│   ├── model_comparison.ipynb
+│   └── training_analysis.ipynb
+├── tests/
+│   ├── __init__.py
+│   ├── test_models.py
+│   ├── test_detection.py
+│   └── test_api.py
+├── config/
+│   ├── config.yaml
+│   └── model_configs/
+│       ├── yolo_config.yaml
+│       ├── rcnn_config.yaml
+│       └── ssd_config.yaml
+├── scripts/
+│   ├── download_data.py
+│   ├── train_model.py
+│   ├── evaluate_model.py
+│   └── convert_annotations.py
+├── requirements.txt
+├── setup.py
+├── Dockerfile
+├── docker-compose.yml
+├── .gitignore
+└── README.md
