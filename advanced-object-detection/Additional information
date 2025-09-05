@@ -1,0 +1,260 @@
+1. Generate Sample Data
+Bash
+
+python src/data/data_loader.py
+2. Train a Model (Optional)
+Bash
+
+python scripts/train_model.py --model yolov8s --epochs 50
+3. Start the Web Application
+Bash
+
+streamlit run web_app/app.py
+4. Start the API Server
+Bash
+
+python api/main.py
+📖 Usage Guide
+Web Interface
+Open browser: http://localhost:8501
+Upload image: Drag & drop or browse
+Select model: Choose from dropdown
+Adjust settings: Confidence threshold, IoU, etc.
+Run detection: Click "Detect Objects"
+View results: See detections, metrics, and analytics
+API Usage
+Single Image Detection
+Bash
+
+curl -X POST "http://localhost:8000/detect/image" \
+  -H "Content-Type: multipart/form-data" \
+  -F "file=@image.jpg" \
+  -F "conf_threshold=0.25"
+Batch Processing
+Bash
+
+curl -X POST "http://localhost:8000/detect/batch" \
+  -H "Content-Type: multipart/form-data" \
+  -F "files=@image1.jpg" \
+  -F "files=@image2.jpg" \
+  -F "conf_threshold=0.3"
+Model Management
+Bash
+
+# Get available models
+curl "http://localhost:8000/models/available"
+
+# Set model
+curl -X POST "http://localhost:8000/models/set/yolov8m"
+
+# Get model info
+curl "http://localhost:8000/models/info"
+Python SDK
+Python
+
+from src.detection.detector import MultiModelDetector
+
+# Initialize detector
+detector = MultiModelDetector()
+
+# Set model
+detector.set_model('yolov8s')
+
+# Detect objects
+result = detector.detect_image('path/to/image.jpg')
+print(f"Found {result['num_detections']} objects")
+🏗️ Project Structure
+text
+
+advanced-object-detection/
+├── 📁 data/                    # Dataset storage
+│   ├── raw/                    # Raw images/videos
+│   ├── processed/              # Processed data
+│   └── annotations/            # Label files
+├── 📁 src/                     # Source code
+│   ├── data/                   # Data handling
+│   ├── models/                 # Model implementations
+│   ├── detection/              # Detection pipeline
+│   ├── training/               # Training pipeline
+│   └── evaluation/             # Evaluation metrics
+├── 📁 models/                  # Trained models
+│   ├── pretrained/             # Downloaded models
+│   ├── trained/                # Custom trained models
+│   └── checkpoints/            # Training checkpoints
+├── 📁 web_app/                 # Streamlit web interface
+├── 📁 api/                     # FastAPI REST API
+├── 📁 notebooks/               # Jupyter notebooks
+├── 📁 scripts/                 # Utility scripts
+├── 📁 tests/                   # Unit tests
+├── 📁 config/                  # Configuration files
+├── 📄 requirements.txt         # Python dependencies
+├── 📄 docker-compose.yml       # Docker services
+└── 📄 README.md               # This file
+🔧 Configuration
+Main Config (config/config.yaml)
+YAML
+
+models:
+  default_model: "yolov8s"
+  available_models: ["yolov8n", "yolov8s", "yolov8m"]
+
+data:
+  classes: ["person", "car", "bicycle", ...]
+  augmentation:
+    enabled: true
+    horizontal_flip: 0.5
+
+training:
+  batch_size: 16
+  epochs: 100
+  learning_rate: 0.001
+Model-Specific Configs
+config/model_configs/yolo_config.yaml
+config/model_configs/rcnn_config.yaml
+config/model_configs/ssd_config.yaml
+🧪 Training Custom Models
+Prepare Dataset
+Bash
+
+# Organize data in YOLO format
+data/
+├── train/
+│   ├── images/
+│   └── labels/
+├── val/
+│   ├── images/
+│   └── labels/
+└── classes.txt
+Start Training
+Bash
+
+python scripts/train_model.py \
+  --model yolov8s \
+  --data data/dataset.yaml \
+  --epochs 100 \
+  --batch-size 16 \
+  --device cuda
+Monitor Training
+TensorBoard: tensorboard --logdir runs/train
+Weights & Biases: Automatic logging enabled
+Web Interface: Real-time training dashboard
+📊 Performance Benchmarks
+Model Comparison (COCO Dataset)
+Model	mAP@0.5	mAP@0.5:0.95	FPS (GPU)	Size (MB)
+YOLOv8n	37.3	52.8	238	6.2
+YOLOv8s	44.9	61.8	175	21.5
+YOLOv8m	50.2	67.2	110	49.7
+YOLOv8l	52.9	69.3	82	83.7
+Hardware Requirements
+CPU Only: 2-5 FPS (YOLOv8n)
+GTX 1060: 15-30 FPS (YOLOv8s)
+RTX 3080: 50-100 FPS (YOLOv8m)
+RTX 4090: 100-200 FPS (YOLOv8l)
+🚀 Deployment
+Local Development
+Bash
+
+# Start all services
+docker-compose up -d
+
+# Scale API workers
+docker-compose up --scale api=3
+Production Deployment
+Bash
+
+# Build production image
+docker build -t object-detection:prod .
+
+# Deploy with Kubernetes (example)
+kubectl apply -f k8s/deployment.yaml
+Cloud Deployment
+AWS: EC2 + ECS/EKS
+GCP: Compute Engine + GKE
+Azure: VM + AKS
+Edge: NVIDIA Jetson, Raspberry Pi
+🧪 Testing
+Run Unit Tests
+Bash
+
+pytest tests/ -v
+Integration Tests
+Bash
+
+python -m pytest tests/test_api.py
+python -m pytest tests/test_detection.py
+Performance Tests
+Bash
+
+python scripts/benchmark_models.py
+📈 Monitoring & Analytics
+Built-in Analytics
+Detection Performance: FPS, latency, accuracy
+Model Comparison: Side-by-side benchmarks
+Usage Statistics: API calls, popular models
+Error Tracking: Failed detections, system errors
+External Monitoring
+Prometheus + Grafana: System metrics
+ELK Stack: Log aggregation
+Weights & Biases: ML experiment tracking
+🛠️ Advanced Features
+Model Ensemble
+Python
+
+from src.models.yolo import YOLOEnsemble
+
+ensemble = YOLOEnsemble([
+    {'params': {'model_name': 'yolov8s'}, 'weight': 1.0},
+    {'params': {'model_name': 'yolov8m'}, 'weight': 1.2}
+])
+Custom Model Integration
+Python
+
+class CustomDetector(BaseDetector):
+    def detect(self, image):
+        # Implement custom detection logic
+        return detections
+Real-time Streaming
+Python
+
+from src.detection.detector import RealTimeDetector
+
+rt_detector = RealTimeDetector(detector)
+rt_detector.start_camera_detection(camera_id=0)
+🔍 Troubleshooting
+Common Issues
+CUDA Out of Memory
+
+Bash
+
+# Reduce batch size
+export PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb:128
+Model Download Fails
+
+Bash
+
+# Manual download
+wget https://github.com/ultralytics/assets/releases/download/v0.0.0/yolov8s.pt
+Permission Errors
+
+Bash
+
+# Fix permissions
+sudo chown -R $USER:$USER data/ models/
+Performance Optimization
+GPU Memory: Reduce batch size, use gradient checkpointing
+CPU Performance: Increase workers, use ONNX runtime
+Storage: Use SSD, enable caching
+Network: Use CDN for model downloads
+🤝 Contributing
+Development Setup
+Bash
+
+# Install development dependencies
+pip install -r requirements-dev.txt
+
+# Setup pre-commit hooks
+pre-commit install
+
+# Run code formatting
+black src/ tests/
+isort src/ tests/
