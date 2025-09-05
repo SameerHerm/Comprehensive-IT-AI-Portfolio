@@ -1,0 +1,42 @@
+data:
+  raw_data_path: "data/raw/cardiovascular_data.csv"
+  processed_data_path: "data/processed/processed_data.csv"
+  test_size: 0.2
+  random_state: 42
+
+model:
+  models_to_train:
+    - "logistic_regression"
+    - "random_forest"
+    - "xgboost"
+    - "lightgbm"
+    - "neural_network"
+  
+  hyperparameter_tuning: true
+  cross_validation_folds: 5
+  scoring_metric: "roc_auc"
+
+features:
+  categorical_features:
+    - "gender"
+    - "smoking"
+    - "alcohol"
+    - "physical_activity"
+  
+  numerical_features:
+    - "age"
+    - "height"
+    - "weight"
+    - "systolic_bp"
+    - "diastolic_bp"
+    - "cholesterol"
+    - "glucose"
+
+api:
+  host: "0.0.0.0"
+  port: 5000
+  debug: false
+
+web_app:
+  title: "Cardiovascular Risk Prediction System"
+  description: "AI-powered cardiovascular disease risk assessment"
