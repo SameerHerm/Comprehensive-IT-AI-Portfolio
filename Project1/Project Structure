@@ -1,0 +1,35 @@
+cardiovascular-risk-prediction/
+├── data/
+│   ├── raw/
+│   └── processed/
+├── models/
+├── notebooks/
+├── src/
+│   ├── __init__.py
+│   ├── data_preprocessing.py
+│   ├── feature_engineering.py
+│   ├── model_training.py
+│   ├── model_evaluation.py
+│   └── prediction_api.py
+├── web_app/
+│   ├── app.py
+│   ├── templates/
+│   │   ├── index.html
+│   │   └── results.html
+│   └── static/
+│       ├── style.css
+│       └── script.js
+├── tests/
+│   ├── __init__.py
+│   ├── test_preprocessing.py
+│   └── test_models.py
+├── config/
+│   └── config.yaml
+├── requirements.txt
+├── setup.py
+├── Dockerfile
+├── docker-compose.yml
+├── .github/
+│   └── workflows/
+│       └── ci.yml
+└── README.md
