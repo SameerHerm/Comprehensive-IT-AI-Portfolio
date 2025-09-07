@@ -65,6 +65,65 @@ Acknowledgments 🙏
 Original spam dataset from UCI Machine Learning Repository
 Inspired by various spam detection research papers
 
+Instructions for Setup
+Total Files Needed: 21 files
+Directory Structure Creation:
+Create the main project folder: spam-classifier-enhanced/
+Create subdirectories: data/, src/, models/, notebooks/, api/, tests/, config/, scripts/
+File Placement:
+Place all Python files (.py) in their respective directories
+Place configuration files (config.yaml) in config/
+Place data files in data/
+Place requirements and setup files in the root directory
+Setup Steps:
+Clone/Create Repository:
+Bash
+
+mkdir spam-classifier-enhanced
+cd spam-classifier-enhanced
+Create all directories:
+Bash
+
+mkdir -p data src models notebooks api tests config scripts plots reports logs
+Add all the files provided above to their respective locations
+
+Generate the dataset:
+
+Bash
+
+python src/generate_dataset.py
+Install dependencies:
+Bash
+
+pip install -r requirements.txt
+Download NLTK data:
+Bash
+
+python -c "import nltk; nltk.download('stopwords'); nltk.download('punkt'); nltk.download('wordnet'); nltk.download('omw-1.4')"
+Train the models:
+Bash
+
+python scripts/train_model.py --model all
+Run tests:
+Bash
+
+pytest tests/
+Start the API:
+Bash
+
+python api/app.py
+This enhanced spam classifier includes:
+
+Multiple ML algorithms (Naive Bayes, SVM, Random Forest, XGBoost)
+Advanced text preprocessing and feature engineering
+REST API for real-time predictions
+Comprehensive evaluation metrics and visualizations
+Unit tests
+Configuration management
+Logging system
+Model persistence
+Batch prediction capabilities
+The project is production-ready and includes proper error handling, documentation, and modular design for easy extension and maintenance.
 
 Clone the repository:
 ```bash
