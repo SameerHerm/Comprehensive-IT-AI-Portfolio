@@ -1,6 +1,4 @@
 
-## File 2: requirements.txt
-
 ```txt
 # Airflow
 apache-airflow==2.7.0
