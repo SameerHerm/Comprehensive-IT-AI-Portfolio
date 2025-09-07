@@ -1,0 +1,61 @@
+# Kafka Configuration
+
+kafka:
+  # Broker settings
+  brokers:
+    bootstrap_servers: "kafka:9093"
+    security_protocol: "PLAINTEXT"
+    
+  # Producer settings
+  producer:
+    acks: "all"
+    retries: 3
+    batch_size: 16384
+    linger_ms: 10
+    buffer_memory: 33554432
+    compression_type: "gzip"
+    max_in_flight_requests: 5
+    
+  # Consumer settings
+  consumer:
+    group_id: "etl-consumer-group"
+    auto_offset_reset: "earliest"
+    enable_auto_commit: true
+    auto_commit_interval_ms: 5000
+    max_poll_records: 500
+    session_timeout_ms: 30000
+    heartbeat_interval_ms: 3000
+    
+  # Topics
+  topics:
+    - name: "etl-streaming-data"
+      partitions: 3
+      replication_factor: 1
+      retention_ms: 604800000  # 7 days
+      
+    - name: "etl-processed-data"
+      partitions: 3
+      replication_factor: 1
+      retention_ms: 604800000
+      
+    - name: "etl-errors"
+      partitions: 1
+      replication_factor: 1
+      retention_ms: 2592000000  # 30 days
+      
+  # Stream processing
+  streams:
+    application_id: "etl-stream-processor"
+    num_stream_threads: 2
+    processing_guarantee: "exactly_once"
+    state_dir: "/tmp/kafka-streams"
+    
+  # Schema Registry (if using Avro)
+  schema_registry:
+    url: "http://schema-registry:8081"
+    
+# Monitoring
+monitoring:
+  enable_jmx: true
+  jmx_port: 9999
+  metrics_reporters: ["prometheus"]
