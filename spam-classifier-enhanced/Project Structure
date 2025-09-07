@@ -1,0 +1,41 @@
+spam-classifier-enhanced/
+│
+├── README.md
+├── requirements.txt
+├── setup.py
+├── .gitignore
+│
+├── data/
+│   ├── spam_dataset.csv
+│   └── sample_emails.txt
+│
+├── src/
+│   ├── __init__.py
+│   ├── data_preprocessing.py
+│   ├── feature_engineering.py
+│   ├── model_training.py
+│   ├── model_evaluation.py
+│   └── utils.py
+│
+├── models/
+│   └── (saved models will be stored here)
+│
+├── notebooks/
+│   └── spam_classifier_analysis.ipynb
+│
+├── api/
+│   ├── __init__.py
+│   ├── app.py
+│   └── predictor.py
+│
+├── tests/
+│   ├── __init__.py
+│   ├── test_preprocessing.py
+│   └── test_models.py
+│
+├── config/
+│   └── config.yaml
+│
+└── scripts/
+    ├── train_model.py
+    └── predict.py
