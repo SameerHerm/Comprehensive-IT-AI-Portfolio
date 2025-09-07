@@ -1,0 +1,103 @@
+etl-pipeline-enhanced/
+│
+├── README.md
+├── requirements.txt
+├── docker-compose.yml
+├── .env.example
+├── .gitignore
+├── Makefile
+│
+├── airflow/
+│   ├── dags/
+│   │   ├── __init__.py
+│   │   ├── etl_main_pipeline.py
+│   │   ├── streaming_pipeline.py
+│   │   ├── data_quality_dag.py
+│   │   └── batch_processing_dag.py
+│   ├── plugins/
+│   │   ├── __init__.py
+│   │   ├── operators/
+│   │   │   ├── __init__.py
+│   │   │   ├── kafka_operator.py
+│   │   │   └── quality_check_operator.py
+│   │   └── hooks/
+│   │       ├── __init__.py
+│   │       └── kafka_hook.py
+│   └── config/
+│       └── airflow.cfg
+│
+├── kafka/
+│   ├── config/
+│   │   ├── server.properties
+│   │   └── zookeeper.properties
+│   ├── producers/
+│   │   ├── __init__.py
+│   │   ├── data_producer.py
+│   │   ├── weather_producer.py
+│   │   └── transaction_producer.py
+│   └── consumers/
+│       ├── __init__.py
+│       ├── data_consumer.py
+│       └── stream_processor.py
+│
+├── scripts/
+│   ├── setup.sh
+│   ├── start_services.sh
+│   ├── stop_services.sh
+│   ├── data_generator.sh
+│   ├── etl_processor.sh
+│   ├── backup_data.sh
+│   └── monitoring.sh
+│
+├── data/
+│   ├── raw/
+│   │   └── sample_data.csv
+│   ├── processed/
+│   ├── staging/
+│   └── archive/
+│
+├── config/
+│   ├── pipeline_config.yaml
+│   ├── database_config.yaml
+│   └── kafka_config.yaml
+│
+├── src/
+│   ├── __init__.py
+│   ├── extractors/
+│   │   ├── __init__.py
+│   │   ├── file_extractor.py
+│   │   ├── api_extractor.py
+│   │   └── database_extractor.py
+│   ├── transformers/
+│   │   ├── __init__.py
+│   │   ├── data_cleaner.py
+│   │   ├── data_validator.py
+│   │   └── aggregator.py
+│   ├── loaders/
+│   │   ├── __init__.py
+│   │   ├── database_loader.py
+│   │   ├── file_loader.py
+│   │   └── cloud_loader.py
+│   └── utils/
+│       ├── __init__.py
+│       ├── logger.py
+│       ├── monitoring.py
+│       └── helpers.py
+│
+├── tests/
+│   ├── __init__.py
+│   ├── test_extractors.py
+│   ├── test_transformers.py
+│   ├── test_loaders.py
+│   └── test_kafka.py
+│
+├── monitoring/
+│   ├── dashboards/
+│   │   └── pipeline_dashboard.json
+│   └── alerts/
+│       └── alert_rules.yaml
+│
+└── docs/
+    ├── architecture.md
+    ├── setup_guide.md
+    └── api_documentation.md
