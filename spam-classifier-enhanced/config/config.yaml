@@ -1,0 +1,63 @@
+# Configuration file for Spam Classifier
+
+# Data settings
+data:
+  dataset_path: "data/spam_dataset.csv"
+  test_size: 0.2
+  random_state: 42
+  validation_split: 0.1
+
+# Preprocessing settings
+preprocessing:
+  remove_stopwords: true
+  lemmatize: true
+  min_word_length: 2
+  max_features: 5000
+
+# Feature engineering
+features:
+  use_tfidf: true
+  tfidf_max_features: 5000
+  tfidf_ngram_range: [1, 3]
+  use_word2vec: false
+  word2vec_size: 100
+  use_char_features: true
+
+# Model settings
+models:
+  train_all: true
+  use_grid_search: false
+  save_models: true
+  models_to_train:
+    - naive_bayes
+    - logistic_regression
+    - svm
+    - random_forest
+    - xgboost
+
+# Training settings
+training:
+  cross_validation_folds: 5
+  n_jobs: -1
+  verbose: 1
+
+# Evaluation settings
+evaluation:
+  generate_plots: true
+  save_plots: true
+  plot_dir: "plots"
+  generate_report: true
+  report_path: "reports/evaluation_report.html"
+
+# API settings
+api:
+  host: "0.0.0.0"
+  port: 5000
+  debug: false
+  max_content_length: 16384
+
+# Logging settings
+logging:
+  level: "INFO"
+  log_dir: "logs"
+  log_file: "spam_classifier.log"
