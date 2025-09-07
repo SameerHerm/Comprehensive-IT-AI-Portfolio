@@ -43,3 +43,25 @@ Models are saved using joblib for efficient serialization
 Neural network models (if any) are saved in .h5 format
 All models are compatible with scikit-learn 1.3.0+
 Feature engineering pipeline must be loaded alongside models for proper functioning
+
+To use these files:
+Place the notebook in the notebooks/ directory
+Create the models directory if it doesn't exist
+Run the notebook to train real models, or run the sample generation script for testing:
+Bash
+
+# To generate sample models for testing
+cd models
+python generate_sample_models.py
+
+# Or run the notebook to train real models
+jupyter notebook notebooks/spam_classifier_analysis.ipynb
+The notebook provides a complete end-to-end analysis pipeline that:
+
+Loads and explores the spam dataset
+Performs extensive preprocessing and feature engineering
+Trains multiple ML models (Naive Bayes, SVM, Random Forest, XGBoost, etc.)
+Evaluates models with various metrics and visualizations
+Saves all trained models to the models/ directory
+Creates a production-ready pipeline for deployment
+All models will be automatically saved in the models/ directory after running the notebook or training scripts.
