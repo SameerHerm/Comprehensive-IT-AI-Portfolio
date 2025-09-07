@@ -1,0 +1,101 @@
+# Pipeline Configuration
+
+pipeline:
+  name: "ETL Data Pipeline"
+  version: "2.0.0"
+  environment: "development"
+  
+  # Batch processing settings
+  batch:
+    size: 1000
+    parallel_jobs: 4
+    retry_attempts: 3
+    retry_delay: 5  # seconds
+    timeout: 3600  # seconds
+    
+  # Streaming settings
+  streaming:
+    window_size: 60  # seconds
+    checkpoint_interval: 300  # seconds
+    max_records_per_batch: 1000
+    
+  # Data quality settings
+  quality:
+    enable_checks: true
+    fail_on_warning: false
+    sample_size: 0.1  # 10% sampling
+    
+# Source configurations
+sources:
+  files:
+    path: "data/raw"
+    formats: ["csv", "json", "parquet"]
+    encoding: "utf-8"
+    
+  databases:
+    postgres:
+      host: "postgres"
+      port: 5432
+      database: "source_db"
+      schema: "public"
+      
+  apis:
+    weather:
+      url: "https://api.weather.com/v1"
+      auth_type: "api_key"
+      rate_limit: 100  # requests per minute
+      
+# Target configurations
+targets:
+  warehouse:
+    type: "postgresql"
+    host: "postgres"
+    port: 5432
+    database: "warehouse"
+    schema: "fact"
+    
+  data_lake:
+    type: "s3"
+    bucket: "data-lake"
+    prefix: "processed/"
+    
+# Transformation rules
+transformations:
+  - name: "clean_nulls"
+    type: "remove_nulls"
+    columns: ["product_id", "quantity", "price"]
+    
+  - name: "standardize_dates"
+    type: "date_format"
+    format: "%Y-%m-%d"
+    
+  - name: "calculate_metrics"
+    type: "derived_column"
+    expression: "quantity * price"
+    output_column: "total_amount"
+    
+# Monitoring settings
+monitoring:
+  metrics:
+    enable: true
+    export_interval: 60  # seconds
+    
+  alerts:
+    enable: true
+    channels: ["email", "slack"]
+    
+  dashboards:
+    grafana:
+      url: "http://grafana:3000"
+      
+# Notification settings
+notifications:
+  email:
+    smtp_server: "smtp.gmail.com"
+    smtp_port: 587
+    from_email: "etl-pipeline@example.com"
+    to_emails: ["admin@example.com"]
+    
+  slack:
+    webhook_url: "${SLACK_WEBHOOK_URL}"
+    channel: "#data-pipeline"
