@@ -1,0 +1,61 @@
+
+## File 2: requirements.txt
+
+```txt
+# Airflow
+apache-airflow==2.7.0
+apache-airflow-providers-postgres==5.6.0
+apache-airflow-providers-redis==3.3.0
+apache-airflow-providers-ssh==3.7.0
+
+# Kafka
+kafka-python==2.0.2
+confluent-kafka==2.2.0
+
+# Database
+psycopg2-binary==2.9.7
+sqlalchemy==2.0.20
+pymongo==4.4.1
+redis==4.6.0
+
+# Data Processing
+pandas==2.0.3
+numpy==1.24.3
+pyarrow==13.0.0
+dask==2023.8.0
+
+# API & Web
+requests==2.31.0
+fastapi==0.103.0
+uvicorn==0.23.2
+
+# Cloud Storage
+boto3==1.28.40
+google-cloud-storage==2.10.0
+azure-storage-blob==12.17.0
+
+# Data Quality
+great-expectations==0.17.12
+pandas-profiling==3.6.6
+
+# Monitoring
+prometheus-client==0.17.1
+grafana-api==1.0.3
+
+# Utilities
+pyyaml==6.0.1
+python-dotenv==1.0.0
+croniter==1.4.1
+click==8.1.6
+colorlog==6.7.0
+
+# Testing
+pytest==7.4.0
+pytest-cov==4.1.0
+pytest-mock==3.11.1
+faker==19.3.1
+
+# Development
+black==23.7.0
+flake8==6.1.0
+pylint==2.17.5
