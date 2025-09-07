@@ -30,6 +30,39 @@ text
 - PostgreSQL 13+
 - Redis (for Airflow Celery)
 
+Setup Instructions:
+Create the directory structure first:
+Bash
+
+mkdir -p etl-pipeline-enhanced/{airflow/{dags,plugins/{operators,hooks},config},kafka/{config,producers,consumers},scripts,data/{raw,processed,staging,archive},config,src/{extractors,transformers,loaders,utils},tests,monitoring/{dashboards,alerts},docs}
+Add all the files to their respective locations
+
+Make scripts executable:
+
+Bash
+
+chmod +x scripts/*.sh
+Run the setup script:
+Bash
+
+./scripts/setup.sh
+Start the services:
+Bash
+
+docker-compose up -d
+This complete ETL pipeline project includes:
+
+Real-time streaming with Kafka
+Batch processing with Airflow
+Data quality checks
+Monitoring and alerting
+Docker containerization
+Comprehensive testing
+Shell script automation
+Multiple data source/target support
+Production-ready configuration
+The pipeline is fully functional and ready for deployment!
+
 ## Quick Start 🚀
 
 ### 1. Clone the repository
