@@ -1,0 +1,48 @@
+# src/generate_dataset.py - Run this to generate the dataset
+import pandas as pd
+import random
+import string
+
+def generate_spam_dataset():
+    spam_phrases = [
+        "WINNER!! You have won", "Claim your prize", "Free money", 
+        "Click here now", "Limited time offer", "Act now", "100% free",
+        "Congratulations! You've been selected", "Call now", "Apply online",
+        "Get paid", "Work from home", "Make money fast", "Nigerian prince",
+        "Viagra", "Weight loss", "Cheap meds", "Hot singles", "Casino",
+        "Lottery winner", "Tax refund", "Investment opportunity"
+    ]
+    
+    ham_phrases = [
+        "Meeting scheduled for", "Please find attached", "Thank you for",
+        "Best regards", "Looking forward to", "Project update", "Team meeting",
+        "Quarterly report", "Invoice attached", "Conference call", "Deadline",
+        "Budget proposal", "Client feedback", "Performance review", "Holiday schedule",
+        "Office closure", "Training session", "Department update", "Lunch meeting",
+        "Project milestone", "Status report", "Weekly summary"
+    ]
+    
+    data = []
+    
+    # Generate spam emails
+    for i in range(2500):
+        text = f"{random.choice(spam_phrases)} {random.choice(spam_phrases).lower()}! "
+        text += ''.join(random.choices(string.ascii_lowercase + ' ', k=random.randint(50, 200)))
+        text += f" {random.choice(spam_phrases).lower()}"
+        data.append({'text': text, 'label': 'spam', 'confidence': random.uniform(0.8, 1.0)})
+    
+    # Generate ham emails
+    for i in range(2500):
+        text = f"{random.choice(ham_phrases)} "
+        text += ''.join(random.choices(string.ascii_lowercase + ' ', k=random.randint(100, 300)))
+        text += f". {random.choice(ham_phrases).lower()}."
+        data.append({'text': text, 'label': 'ham', 'confidence': random.uniform(0.85, 1.0)})
+    
+    df = pd.DataFrame(data)
+    df = df.sample(frac=1).reset_index(drop=True)  # Shuffle
+    df.to_csv('data/spam_dataset.csv', index=False)
+    print(f"Dataset generated with {len(df)} samples")
+    return df
+
+if __name__ == "__main__":
+    generate_spam_dataset()
