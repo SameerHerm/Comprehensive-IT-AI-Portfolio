@@ -1,0 +1,279 @@
+name: Cardiovascular Risk Prediction CI/CD
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'Cardiovascular Risk Prediction project/**'
+      - '.github/workflows/ci.yml'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'Cardiovascular Risk Prediction project/**'
+  schedule:
+    # Run tests every Sunday at 00:00 UTC
+    - cron: '0 0 * * 0'
+
+env:
+  PROJECT_PATH: 'Cardiovascular Risk Prediction project'
+  PYTHON_VERSION: '3.9'
+  
+jobs:
+  lint:
+    name: Code Quality Checks
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+    
+    - name: Cache pip packages
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+    
+    - name: Install dependencies
+      working-directory: ${{ env.PROJECT_PATH }}
+      run: |
+        python -m pip install --upgrade pip
+        pip install flake8 black pylint mypy
+        pip install -r requirements.txt
+    
+    - name: Run Black formatter check
+      working-directory: ${{ env.PROJECT_PATH }}
+      run: black --check src/ tests/ web_app/
+      
+    - name: Run Flake8 linter
+      working-directory: ${{ env.PROJECT_PATH }}
+      run: flake8 src/ tests/ web_app/ --max-line-length=100 --ignore=E203,W503
+    
+    - name: Run Pylint
+      working-directory: ${{ env.PROJECT_PATH }}
+      run: pylint src/ tests/ web_app/ --max-line-length=100 --disable=C0114,C0116
+      continue-on-error: true
+    
+    - name: Run MyPy type checker
+      working-directory: ${{ env.PROJECT_PATH }}
+      run: mypy src/ --ignore-missing-imports
+      continue-on-error: true
+
+  test:
+    name: Run Tests
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ['3.8', '3.9', '3.10', '3.11']
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+    
+    - name: Cache pip packages
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+    
+    - name: Install dependencies
+      working-directory: ${{ env.PROJECT_PATH }}
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytest pytest-cov pytest-mock
+    
+    - name: Run unit tests
+      working-directory: ${{ env.PROJECT_PATH }}
+      run: |
+        pytest tests/ -v --cov=src --cov-report=xml --cov-report=html
+    
+    - name: Upload coverage reports
+      uses: codecov/codecov-action@v3
+      with:
+        file: ${{ env.PROJECT_PATH }}/coverage.xml
+        flags: unittests
+        name: codecov-${{ matrix.os }}-py${{ matrix.python-version }}
+        fail_ci_if_error: false
+
+  integration-test:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    needs: [lint, test]
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+    
+    - name: Install dependencies
+      working-directory: ${{ env.PROJECT_PATH }}
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Run integration tests
+      working-directory: ${{ env.PROJECT_PATH }}
+      run: |
+        python -m pytest tests/integration/ -v
+      continue-on-error: true
+    
+    - name: Test model training pipeline
+      working-directory: ${{ env.PROJECT_PATH }}
+      run: |
+        python src/train.py --test-mode
+      continue-on-error: true
+    
+    - name: Test prediction pipeline
+      working-directory: ${{ env.PROJECT_PATH }}
+      run: |
+        python src/predict.py --test-mode
+      continue-on-error: true
+
+  security:
+    name: Security Checks
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+    
+    - name: Install security tools
+      run: |
+        python -m pip install --upgrade pip
+        pip install safety bandit
+    
+    - name: Run Safety check
+      working-directory: ${{ env.PROJECT_PATH }}
+      run: safety check --json
+      continue-on-error: true
+    
+    - name: Run Bandit security linter
+      working-directory: ${{ env.PROJECT_PATH }}
+      run: bandit -r src/ -f json -o bandit-report.json
+      continue-on-error: true
+
+  build-docker:
+    name: Build Docker Image
+    runs-on: ubuntu-latest
+    needs: [test]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+    
+    - name: Build Docker image
+      working-directory: ${{ env.PROJECT_PATH }}
+      run: |
+        docker build -t cardiovascular-risk-prediction:latest .
+    
+    - name: Run Docker container test
+      run: |
+        docker run --rm cardiovascular-risk-prediction:latest python -c "import src; print('Docker image OK')"
+      continue-on-error: true
+
+  deploy:
+    name: Deploy Application
+    runs-on: ubuntu-latest
+    needs: [lint, test, security]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+    
+    - name: Install dependencies
+      working-directory: ${{ env.PROJECT_PATH }}
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Build package
+      working-directory: ${{ env.PROJECT_PATH }}
+      run: |
+        python setup.py sdist bdist_wheel
+    
+    - name: Deploy to staging
+      run: |
+        echo "Deploying to staging environment..."
+        # Add your deployment commands here
+      continue-on-error: true
+    
+    - name: Run smoke tests
+      run: |
+        echo "Running smoke tests..."
+        # Add smoke test commands here
+      continue-on-error: true
+
+  documentation:
+    name: Generate Documentation
+    runs-on: ubuntu-latest
+    needs: [test]
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+    
+    - name: Install documentation tools
+      working-directory: ${{ env.PROJECT_PATH }}
+      run: |
+        python -m pip install --upgrade pip
+        pip install sphinx sphinx-rtd-theme
+        pip install -r requirements.txt
+    
+    - name: Generate API documentation
+      working-directory: ${{ env.PROJECT_PATH }}
+      run: |
+        sphinx-apidoc -o docs/source src/
+        cd docs && make html
+      continue-on-error: true
+    
+    - name: Upload documentation artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: documentation
+        path: ${{ env.PROJECT_PATH }}/docs/_build/html/
+      continue-on-error: true
+
+  notify:
+    name: Notify Results
+    runs-on: ubuntu-latest
+    needs: [lint, test, security, integration-test]
+    if: always()
+    
+    steps:
+    - name: Send notification
+      run: |
+        echo "CI/CD Pipeline completed"
+        echo "Status: ${{ job.status }}"
+        # Add notification logic here (Slack, Email, etc.)
