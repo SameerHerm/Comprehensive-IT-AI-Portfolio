@@ -1,0 +1,51 @@
+# SSD Configuration
+
+model:
+  name: "SSD"
+  architecture: "ssd300"
+  
+  # Model parameters
+  num_classes: 21  # 20 + background
+  image_size: 300
+  
+  # Backbone
+  backbone:
+    type: "VGG16"
+    pretrained: true
+    
+  # Feature maps
+  feature_maps: [38, 19, 10, 5, 3, 1]
+  
+  # Anchor boxes
+  anchors:
+    min_ratio: 20
+    max_ratio: 90
+    aspect_ratios: [[2], [2, 3], [2, 3], [2, 3], [2], [2]]
+    
+# Training configuration  
+training:
+  batch_size: 32
+  epochs: 200
+  learning_rate: 0.001
+  momentum: 0.9
+  weight_decay: 0.0005
+  
+  # Learning rate schedule
+  scheduler:
+    milestones: [120, 160]
+    gamma: 0.1
+    
+# Loss configuration
+loss:
+  neg_pos_ratio: 3
+  loc_weight: 1.0
+  conf_weight: 1.0
+  
+# Data augmentation
+augmentation:
+  brightness: 0.2
+  contrast: 0.2
+  saturation: 0.2
+  hue: 0.1
+  random_crop: true
+  random_flip: 0.5
