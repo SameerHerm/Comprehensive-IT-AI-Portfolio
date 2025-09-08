@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  # Main application
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+      - ./models:/app/models
+      - ./logs:/app/logs
+    environment:
+      - FLASK_ENV=development
+      - PYTHONUNBUFFERED=1
+    depends_on:
+      - redis
+      - postgres
+    networks:
+      - detection-network
+
+  # Redis for caching
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - detection-network
+
+  # PostgreSQL for metadata
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: detection_db
+      POSTGRES_USER: detection_user
+      POSTGRES_PASSWORD: detection_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - detection-network
+
+  # Jupyter notebook server
+  jupyter:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./notebooks:/app/notebooks
+      - ./data:/app/data
+      - ./src:/app/src
+    command: jupyter notebook --ip=0.0.0.0 --no-browser --allow-root
+    networks:
+      - detection-network
+
+networks:
+  detection-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
