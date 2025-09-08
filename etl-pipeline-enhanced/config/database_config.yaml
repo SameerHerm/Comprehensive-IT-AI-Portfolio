@@ -1,0 +1,124 @@
+# Database Configuration
+
+# PostgreSQL Configuration
+postgres:
+  host: ${POSTGRES_HOST:-postgres}
+  port: ${POSTGRES_PORT:-5432}
+  database: ${POSTGRES_DB:-airflow}
+  user: ${POSTGRES_USER:-airflow}
+  password: ${POSTGRES_PASSWORD:-airflow}
+  
+  # Connection pool settings
+  pool:
+    min_size: 5
+    max_size: 20
+    timeout: 30
+    max_queries: 50000
+    max_inactive_connection_lifetime: 300
+  
+  # Schema configuration
+  schemas:
+    staging: staging
+    warehouse: warehouse
+    mart: mart
+    
+# Redis Configuration
+redis:
+  host: ${REDIS_HOST:-redis}
+  port: ${REDIS_PORT:-6379}
+  db: ${REDIS_DB:-0}
+  password: ${REDIS_PASSWORD:-}
+  
+  # Connection settings
+  socket_timeout: 5
+  socket_connect_timeout: 5
+  socket_keepalive: true
+  socket_keepalive_options: {}
+  
+  # Pool settings
+  connection_pool:
+    max_connections: 50
+    
+# MongoDB Configuration (if needed)
+mongodb:
+  host: ${MONGO_HOST:-mongodb}
+  port: ${MONGO_PORT:-27017}
+  database: ${MONGO_DB:-etl_pipeline}
+  username: ${MONGO_USER:-}
+  password: ${MONGO_PASSWORD:-}
+  
+  # Connection options
+  options:
+    authSource: admin
+    retryWrites: true
+    w: majority
+    
+# Elasticsearch Configuration (if needed)
+elasticsearch:
+  hosts:
+    - ${ES_HOST:-elasticsearch:9200}
+  
+  # Authentication
+  http_auth:
+    username: ${ES_USER:-elastic}
+    password: ${ES_PASSWORD:-changeme}
+  
+  # Connection settings
+  timeout: 30
+  max_retries: 3
+  retry_on_timeout: true
+  
+# Data Lake Configuration
+data_lake:
+  # S3 Configuration
+  s3:
+    endpoint_url: ${S3_ENDPOINT:-}
+    access_key_id: ${AWS_ACCESS_KEY_ID:-}
+    secret_access_key: ${AWS_SECRET_ACCESS_KEY:-}
+    region: ${AWS_REGION:-us-east-1}
+    bucket: ${S3_BUCKET:-etl-data-lake}
+    
+  # Azure Blob Storage
+  azure:
+    account_name: ${AZURE_ACCOUNT_NAME:-}
+    account_key: ${AZURE_ACCOUNT_KEY:-}
+    container: ${AZURE_CONTAINER:-etl-data}
+    
+  # Google Cloud Storage
+  gcs:
+    project_id: ${GCP_PROJECT_ID:-}
+    bucket: ${GCS_BUCKET:-etl-data-lake}
+    credentials_path: ${GOOGLE_APPLICATION_CREDENTIALS:-}
+
+# Database Migration Settings
+migration:
+  enabled: true
+  auto_migrate: false
+  migration_table: schema_migrations
+  migrations_path: migrations/
+
+# Backup Configuration
+backup:
+  enabled: true
+  schedule: "0 2 * * *"  # Daily at 2 AM
+  retention_days: 30
+  backup_path: /backups/database/
+  
+  # Backup targets
+  targets:
+    - postgres
+    - redis
+    
+# Monitoring
+monitoring:
+  # Query performance monitoring
+  slow_query_log: true
+  slow_query_threshold_ms: 1000
+  
+  # Connection monitoring
+  log_connections: true
+  log_disconnections: true
+  
+  # Metrics collection
+  collect_metrics: true
+  metrics_interval_seconds: 60
