@@ -1,11 +1,11 @@
-date,product_id,product_name,quantity,price,customer_id,region,payment_method
-2024-01-01,PROD_1001,Laptop,2,999.99,CUST_10001,north,credit_card
-2024-01-01,PROD_2001,Phone,1,699.99,CUST_10002,south,debit_card
-2024-01-01,PROD_3001,Tablet,3,399.99,CUST_10003,east,paypal
-2024-01-01,PROD_4001,Headphones,5,149.99,CUST_10004,west,credit_card
-2024-01-01,PROD_5001,Smartwatch,2,299.99,CUST_10005,central,cash
-2024-01-02,PROD_1001,Laptop,1,999.99,CUST_10006,north,credit_card
-2024-01-02,PROD_2001,Phone,4,699.99,CUST_10007,south,paypal
-2024-01-02,PROD_3001,Tablet,2,399.99,CUST_10008,east,debit_card
-2024-01-02,PROD_4001,Headphones,3,149.99,CUST_10009,west,credit_card
-2024-01-02,PROD_5001,Smartwatch,1,299.99,CUST_10010,central,cash
+transaction_id,date,customer_id,customer_name,product_id,product_name,quantity,price,region,payment_method,status,total_amount
+TXN_000001,2024-01-15,CUST_1234,John Smith,PROD_101,Laptop,1,999.99,North,credit_card,completed,999.99
+TXN_000002,2024-01-15,CUST_5678,Jane Doe,PROD_202,Phone,2,699.99,South,paypal,completed,1399.98
+TXN_000003,2024-01-15,CUST_9012,Bob Johnson,PROD_303,Tablet,1,399.99,East,debit_card,completed,399.99
+TXN_000004,2024-01-15,CUST_3456,Alice Brown,PROD_404,Headphones,3,149.99,West,cash,pending,449.97
+TXN_000005,2024-01-15,CUST_7890,Charlie Wilson,PROD_505,Watch,1,299.99,Central,credit_card,completed,299.99
+TXN_000006,2024-01-16,CUST_2345,Diana Prince,PROD_101,Laptop,1,999.99,North,debit_card,completed,999.99
+TXN_000007,2024-01-16,CUST_6789,Edward Norton,PROD_202,Phone,1,699.99,South,credit_card,cancelled,699.99
+TXN_000008,2024-01-16,CUST_0123,Fiona Green,PROD_303,Tablet,2,399.99,East,paypal,completed,799.98
+TXN_000009,2024-01-16,CUST_4567,George Miller,PROD_404,Headphones,1,149.99,West,credit_card,completed,149.99
+TXN_000010,2024-01-16,CUST_8901,Helen White,PROD_505,Watch,2,299.99,Central,cash,pending,599.98
