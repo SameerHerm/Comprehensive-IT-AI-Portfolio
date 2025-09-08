@@ -1,0 +1,118 @@
+# Alert Rules for ETL Pipeline Monitoring
+
+groups:
+  - name: etl_pipeline_alerts
+    interval: 30s
+    rules:
+      # High Error Rate Alert
+      - alert: HighErrorRate
+        expr: rate(etl_errors_total[5m]) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          component: etl_pipeline
+        annotations:
+          summary: "High error rate detected in ETL pipeline"
+          description: "Error rate is {{ $value | humanizePercentage }} for pipeline {{ $labels.pipeline }}"
+      
+      # Pipeline Stopped Alert
+      - alert: PipelineStopped
+        expr: etl_pipeline_status == 0
+        for: 10m
+        labels:
+          severity: warning
+          component: etl_pipeline
+        annotations:
+          summary: "ETL pipeline has stopped"
+          description: "Pipeline {{ $labels.pipeline }} has been stopped for more than 10 minutes"
+      
+      # Slow Processing Alert
+      - alert: SlowProcessing
+        expr: histogram_quantile(0.95, rate(etl_processing_duration_seconds_bucket[5m])) > 300
+        for: 5m
+        labels:
+          severity: warning
+          component: etl_pipeline
+        annotations:
+          summary: "Slow processing detected"
+          description: "95th percentile processing time is {{ $value | humanizeDuration }} for pipeline {{ $labels.pipeline }}"
+      
+      # Low Throughput Alert
+      - alert: LowThroughput
+        expr: rate(etl_records_processed_total[5m]) < 100
+        for: 10m
+        labels:
+          severity: warning
+          component: etl_pipeline
+        annotations:
+          summary: "Low throughput detected"
+          description: "Processing rate is only {{ $value }} records/sec for pipeline {{ $labels.pipeline }}"
+      
+      # Kafka Lag Alert
+      - alert: HighKafkaLag
+        expr: kafka_consumer_lag > 10000
+        for: 5m
+        labels:
+          severity: warning
+          component: kafka
+        annotations:
+          summary: "High Kafka consumer lag"
+          description: "Consumer lag is {{ $value }} for topic {{ $labels.topic }}"
+      
+      # Database Connection Alert
+      - alert: DatabaseConnectionFailed
+        expr: up{job="postgres"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          component: database
+        annotations:
+          summary: "Database connection failed"
+          description: "Cannot connect to PostgreSQL database"
+      
+      # Disk Space Alert
+      - alert: LowDiskSpace
+        expr: disk_free_percentage < 10
+        for: 5m
+        labels:
+          severity: critical
+          component: infrastructure
+        annotations:
+          summary: "Low disk space"
+          description: "Only {{ $value }}% disk space remaining on {{ $labels.mount_point }}"
+      
+      # Memory Usage Alert
+      - alert: HighMemoryUsage
+        expr: memory_usage_percentage > 90
+        for: 5m
+        labels:
+          severity: warning
+          component: infrastructure
+        annotations:
+          summary: "High memory usage"
+          description: "Memory usage is {{ $value }}% on {{ $labels.host }}"
+
+  - name: data_quality_alerts
+    interval: 60s
+    rules:
+      # Data Quality Check Failed
+      - alert: DataQualityCheckFailed
+        expr: data_quality_check_passed == 0
+        for: 1m
+        labels:
+          severity: warning
+          component: data_quality
+        annotations:
+          summary: "Data quality check failed"
+          description: "Quality check {{ $labels.check_name }} failed for table {{ $labels.table }}"
+      
+      # Missing Data Alert
+      - alert: MissingData
+        expr: time() - last_data_timestamp > 3600
+        for: 5m
+        labels:
+          severity: warning
+          component: data_ingestion
+        annotations:
+          summary: "No new data received"
+          description: "No new data received for {{ $value | humanizeDuration }} in {{ $labels.source }}"
