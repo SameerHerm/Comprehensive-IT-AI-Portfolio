@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cardiovascular Risk Prediction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1><i class="fas fa-heartbeat"></i> Cardiovascular Risk Prediction System</h1>
+                <p>AI-Powered 10-Year CHD Risk Assessment Tool</p>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Info Section -->
+            <div class="info-section">
+                <div class="info-card">
+                    <i class="fas fa-info-circle"></i>
+                    <h3>About This Tool</h3>
+                    <p>This advanced machine learning system predicts your 10-year risk of developing Coronary Heart Disease (CHD) based on clinical and lifestyle factors.</p>
+                </div>
+                <div class="info-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Privacy First</h3>
+                    <p>Your data is processed securely and is not stored. All predictions are performed in real-time.</p>
+                </div>
+                <div class="info-card">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>High Accuracy</h3>
+                    <p>Our models achieve over 92% accuracy using state-of-the-art machine learning algorithms.</p>
+                </div>
+            </div>
+
+            <!-- Form Section -->
+            <div class="form-section">
+                <h2>Enter Your Health Information</h2>
+                <form id="prediction-form" action="/predict" method="POST">
+                    
+                    <!-- Demographics Section -->
+                    <div class="form-group-section">
+                        <h3><i class="fas fa-user"></i> Demographics</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="age">Age *</label>
+                                <input type="number" id="age" name="age" min="20" max="100" required>
+                                <small>Years</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="male">Gender *</label>
+                                <select id="male" name="male" required>
+                                    <option value="">Select</option>
+                                    <option value="1">Male</option>
+                                    <option value="0">Female</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Clinical Measurements Section -->
+                    <div class="form-group-section">
+                        <h3><i class="fas fa-stethoscope"></i> Clinical Measurements</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="sysBP">Systolic BP *</label>
+                                <input type="number" id="sysBP" name="sysBP" min="80" max="250" step="1" required>
+                                <small>mmHg</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="diaBP">Diastolic BP *</label>
+                                <input type="number" id="diaBP" name="diaBP" min="40" max="150" step="1" required>
+                                <small>mmHg</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="BMI">BMI *</label>
+                                <input type="number" id="BMI" name="BMI" min="10" max="60" step="0.1" required>
+                                <small>kg/m²</small>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="heartRate">Heart Rate *</label>
+                                <input type="number" id="heartRate" name="heartRate" min="40" max="150" required>
+                                <small>bpm</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="glucose">Glucose *</label>
+                                <input type="number" id="glucose" name="glucose" min="40" max="400" required>
+                                <small>mg/dL</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Laboratory Values Section -->
+                    <div class="form-group-section">
+                        <h3><i class="fas fa-vial"></i> Laboratory Values</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="totChol">Total Cholesterol *</label>
+                                <input type="number" id="totChol" name="totChol" min="100" max="500" required>
+                                <small>mg/dL</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lifestyle Factors Section -->
+                    <div class="form-group-section">
+                        <h3><i class="fas fa-smoking"></i> Lifestyle Factors</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="cigsPerDay">Cigarettes per Day *</label>
+                                <input type="number" id="cigsPerDay" name="cigsPerDay" min="0" max="100" value="0" required>
+                                <small>Enter 0 if non-smoker</small>
+                            </div>
+                            <div class="form-group checkbox-group">
+                                <label>
+                                    <input type="checkbox" id="currentSmoker" name="currentSmoker" value="1">
+                                    Current Smoker
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Medical History Section -->
+                    <div class="form-group-section">
+                        <h3><i class="fas fa-notes-medical"></i> Medical History</h3>
+                        <div class="checkbox-row">
+                            <div class="form-group checkbox-group">
+                                <label>
+                                    <input type="checkbox" id="BPMeds" name="BPMeds" value="1">
+                                    On BP Medication
+                                </label>
+                            </div>
+                            <div class="form-group checkbox-group">
+                                <label>
+                                    <input type="checkbox" id="prevalentStroke" name="prevalentStroke" value="1">
+                                    Previous Stroke
+                                </label>
+                            </div>
+                            <div class="form-group checkbox-group">
+                                <label>
+                                    <input type="checkbox" id="prevalentHyp" name="prevalentHyp" value="1">
+                                    Hypertension
+                                </label>
+                            </div>
+                            <div class="form-group checkbox-group">
+                                <label>
+                                    <input type="checkbox" id="diabetes" name="diabetes" value="1">
+                                    Diabetes
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-calculator"></i> Calculate Risk
+                        </button>
+                        <button type="reset" class="btn btn-secondary">
+                            <i class="fas fa-redo"></i> Reset Form
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Feature Explanations -->
+            <div class="explanations-section">
+                <h3><i class="fas fa-question-circle"></i> Understanding the Risk Factors</h3>
+                <div class="explanation-grid">
+                    <div class="explanation-card">
+                        <h4>Blood Pressure</h4>
+                        <p>High blood pressure increases strain on your heart and arteries.</p>
+                    </div>
+                    <div class="explanation-card">
+                        <h4>Cholesterol</h4>
+                        <p>High cholesterol can lead to plaque buildup in arteries.</p>
+                    </div>
+                    <div class="explanation-card">
+                        <h4>BMI</h4>
+                        <p>Body Mass Index indicates if you're at a healthy weight.</p>
+                    </div>
+                    <div class="explanation-card">
+                        <h4>Smoking</h4>
+                        <p>Smoking significantly increases cardiovascular disease risk.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2024 Cardiovascular Risk Prediction System | For Educational Purposes Only</p>
+            <p><i class="fas fa-exclamation-triangle"></i> This tool is not a substitute for professional medical advice.</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
