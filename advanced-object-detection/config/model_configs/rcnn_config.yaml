@@ -1,0 +1,62 @@
+# Faster R-CNN Configuration
+
+model:
+  name: "Faster R-CNN"
+  architecture: "faster_rcnn"
+  
+  # Backbone
+  backbone:
+    type: "ResNet50"
+    pretrained: true
+    trainable_layers: 3
+    
+  # RPN (Region Proposal Network)
+  rpn:
+    anchor_sizes: [[32], [64], [128], [256], [512]]
+    aspect_ratios: [[0.5, 1.0, 2.0]]
+    pre_nms_top_n_train: 2000
+    pre_nms_top_n_test: 1000
+    post_nms_top_n_train: 2000
+    post_nms_top_n_test: 1000
+    nms_thresh: 0.7
+    fg_iou_thresh: 0.7
+    bg_iou_thresh: 0.3
+    batch_size_per_image: 256
+    positive_fraction: 0.5
+    
+  # ROI (Region of Interest)
+  roi:
+    output_size: 7
+    sampling_ratio: 2
+    
+  # Box predictor
+  box_predictor:
+    num_classes: 91  # 90 + background
+    
+# Training configuration
+training:
+  batch_size: 4
+  epochs: 100
+  learning_rate: 0.005
+  momentum: 0.9
+  weight_decay: 0.0005
+  
+  # Step LR
+  step_size: 8
+  gamma: 0.1
+  
+  # Gradient clipping
+  gradient_clip_val: 10.0
+  
+# Data configuration
+data:
+  train_dataset: "coco_train"
+  val_dataset: "coco_val"
+  num_workers: 4
+  
+# Loss weights
+loss:
+  rpn_cls_weight: 1.0
+  rpn_reg_weight: 1.0
+  roi_cls_weight: 1.0
+  roi_reg_weight: 1.0
