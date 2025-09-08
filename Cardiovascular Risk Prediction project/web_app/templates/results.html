@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Risk Assessment Results - Cardiovascular Risk Prediction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1><i class="fas fa-heartbeat"></i> Risk Assessment Results</h1>
+                <p>Your Personalized Cardiovascular Risk Analysis</p>
+            </div>
+        </header>
+
+        <!-- Main Results -->
+        <main class="results-content">
+            <!-- Risk Score Display -->
+            <div class="risk-score-section">
+                <div class="risk-meter">
+                    <div class="risk-gauge" id="risk-gauge">
+                        <div class="gauge-fill" style="width: {{ (prediction_proba * 100)|int }}%"></div>
+                        <div class="gauge-label">
+                            <span class="risk-percentage">{{ (prediction_proba * 100)|round(1) }}%</span>
+                            <span class="risk-text">10-Year CHD Risk</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="risk-category {% if prediction == 1 %}high-risk{% else %}low-risk{% endif %}">
+                    <i class="fas {% if prediction == 1 %}fa-exclamation-triangle{% else %}fa-check-circle{% endif %}"></i>
+                    <h2>{% if prediction == 1 %}High Risk{% else %}Low Risk{% endif %}</h2>
+                    <p>
+                        {% if prediction == 1 %}
+                            You have an elevated risk of developing cardiovascular disease in the next 10 years.
+                        {% else %}
+                            Your risk of developing cardiovascular disease in the next 10 years is relatively low.
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+
+            <!-- Detailed Analysis -->
+            <div class="analysis-section">
+                <h3><i class="fas fa-chart-bar"></i> Detailed Analysis</h3>
+                
+                <!-- Risk Factors Grid -->
+                <div class="risk-factors-grid">
+                    <div class="factor-card">
+                        <i class="fas fa-user"></i>
+                        <h4>Age & Gender</h4>
+                        <p>{{ input_data.age }} years, {% if input_data.male == 1 %}Male{% else %}Female{% endif %}</p>
+                        <div class="factor-impact {% if input_data.age > 55 %}high{% elif input_data.age > 45 %}medium{% else %}low{% endif %}">
+                            {% if input_data.age > 55 %}High Impact{% elif input_data.age > 45 %}Medium Impact{% else %}Low Impact{% endif %}
+                        </div>
+                    </div>
+
+                    <div class="factor-card">
+                        <i class="fas fa-heartbeat"></i>
+                        <h4>Blood Pressure</h4>
+                        <p>{{ input_data.sysBP }}/{{ input_data.diaBP }} mmHg</p>
+                        <div class="factor-impact {% if input_data.sysBP > 140 %}high{% elif input_data.sysBP > 130 %}medium{% else %}low{% endif %}">
+                            {% if input_data.sysBP > 140 %}High BP{% elif input_data.sysBP > 130 %}Elevated{% else %}Normal{% endif %}
+                        </div>
+                    </div>
+
+                    <div class="factor-card">
+                        <i class="fas fa-weight"></i>
+                        <h4>BMI</h4>
+                        <p>{{ input_data.BMI|round(1) }} kg/m²</p>
+                        <div class="factor-impact {% if input_data.BMI > 30 %}high{% elif input_data.BMI > 25 %}medium{% else %}low{% endif %}">
+                            {% if input_data.BMI > 30 %}Obese{% elif input_data.BMI > 25 %}Overweight{% else %}Normal{% endif %}
+                        </div>
+                    </div>
+
+                    <div class="factor-card">
+                        <i class="fas fa-vial"></i>
+                        <h4>Cholesterol</h4>
+                        <p>{{ input_data.totChol }} mg/dL</p>
+                        <div class="factor-impact {% if input_data.totChol > 240 %}high{% elif input_data.totChol > 200 %}medium{% else %}low{% endif %}">
+                            {% if input_data.totChol > 240 %}High{% elif input_data.totChol > 200 %}Borderline{% else %}Normal{% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feature Importance Chart -->
+                <div class="chart-container">
+                    <h4>Contributing Factors to Your Risk Score</h4>
+                    <canvas id="importanceChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Recommendations -->
+            <div class="recommendations-section">
+                <h3><i class="fas fa-clipboard-list"></i> Personalized Recommendations</h3>
+                
+                {% if prediction == 1 %}
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <strong>Important:</strong> Please consult with a healthcare professional for a comprehensive evaluation.
+                </div>
+                {% endif %}
+
+                <div class="recommendations-grid">
+                    <div class="recommendation-card">
+                        <i class="fas fa-user-md"></i>
+                        <h4>Medical Consultation</h4>
+                        <ul>
+                            <li>Schedule regular check-ups with your physician</li>
+                            <li>Monitor blood pressure regularly</li>
+                            <li>Get cholesterol levels checked annually</li>
+                            {% if prediction == 1 %}
+                            <li><strong>Consider immediate consultation with a cardiologist</strong></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+
+                    <div class="recommendation-card">
+                        <i class="fas fa-running"></i>
+                        <h4>Lifestyle Changes</h4>
+                        <ul>
+                            <li>Aim for 150 minutes of moderate exercise weekly</li>
+                            {% if input_data.BMI > 25 %}
+                            <li>Work towards achieving a healthy weight</li>
+                            {% endif %}
+                            {% if input_data.currentSmoker == 1 %}
+                            <li><strong>Quit smoking - this is critical for your health</strong></li>
+                            {% endif %}
+                            <li>Manage stress through relaxation techniques</li>
+                        </ul>
+                    </div>
+
+                    <div class="recommendation-card">
+                        <i class="fas fa-apple-alt"></i>
+                        <h4>Dietary Modifications</h4>
+                        <ul>
+                            <li>Adopt a heart-healthy diet (Mediterranean or DASH)</li>
+                            <li>Reduce sodium intake to less than 2,300mg daily</li>
+                            <li>Increase fruits and vegetables consumption</li>
+                            {% if input_data.totChol > 200 %}
+                            <li>Limit saturated fats and cholesterol</li>
+                            {% endif %}
+                        </ul>
+                    </div>
+
+                    <div class="recommendation-card">
+                        <i class="fas fa-pills"></i>
+                        <h4>Medical Management</h4>
+                        <ul>
+                            {% if input_data.sysBP > 140 %}
+                            <li>Discuss blood pressure medications with your doctor</li>
+                            {% endif %}
+                            {% if input_data.totChol > 240 %}
+                            <li>Consider cholesterol-lowering medications</li>
+                            {% endif %}
+                            {% if input_data.diabetes == 1 %}
+                            <li>Maintain optimal blood sugar control</li>
+                            {% endif %}
+                            <li>Take prescribed medications as directed</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button onclick="window.print()" class="btn btn-secondary">
+                    <i class="fas fa-print"></i> Print Results
+                </button>
+                <button onclick="downloadPDF()" class="btn btn-secondary">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <a href="/" class="btn btn-primary">
+                    <i class="fas fa-redo"></i> New Assessment
+                </a>
+            </div>
+
+            <!-- Disclaimer -->
+            <div class="disclaimer">
+                <h4><i class="fas fa-info-circle"></i> Important Disclaimer</h4>
+                <p>This risk assessment tool is for educational and informational purposes only. It should not replace professional medical advice, diagnosis, or treatment. Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition.</p>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2024 Cardiovascular Risk Prediction System | For Educational Purposes Only</p>
+        </footer>
+    </div>
+
+    <script>
+        // Feature importance chart
+        const ctx = document.getElementById('importanceChart').getContext('2d');
+        const importanceChart = new Chart(ctx, {
+            type: 'horizontalBar',
+            data: {
+                labels: {{ feature_names|safe }},
+                datasets: [{
+                    label: 'Impact on Risk Score',
+                    data: {{ feature_importance|safe }},
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Relative Importance'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+
+        // Download PDF function
+        function downloadPDF() {
+            // Implementation for PDF download
+            alert('PDF download feature coming soon!');
+        }
+    </script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
