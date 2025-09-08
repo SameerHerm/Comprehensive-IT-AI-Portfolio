@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-time Detection - Object Detection System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1><i class="fas fa-video"></i> Real-time Object Detection</h1>
+            <a href="/" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back to Upload
+            </a>
+        </div>
+
+        <!-- Real-time Section -->
+        <div class="realtime-section">
+            <!-- Camera Selection -->
+            <div class="camera-selection">
+                <label for="camera-select">Select Camera:</label>
+                <select id="camera-select">
+                    <option value="default">Default Camera</option>
+                </select>
+            </div>
+
+            <!-- Model Selection -->
+            <div class="model-selection">
+                <label for="model-select-rt">Detection Model:</label>
+                <select id="model-select-rt">
+                    <option value="yolo">YOLOv8 (Fast, ~30 FPS)</option>
+                    <option value="ssd">SSD (Balanced, ~20 FPS)</option>
+                    <option value="mobilenet">MobileNet (Mobile, ~25 FPS)</option>
+                </select>
+            </div>
+
+            <!-- Video Container -->
+            <div class="video-container">
+                <video id="video-feed" autoplay></video>
+                <canvas id="canvas-overlay"></canvas>
+                <div id="fps-counter" class="fps-counter">FPS: 0</div>
+            </div>
+
+            <!-- Controls -->
+            <div class="controls">
+                <button id="start-btn" class="btn btn-primary">
+                    <i class="fas fa-play"></i> Start Detection
+                </button>
+                <button id="stop-btn" class="btn btn-danger" disabled>
+                    <i class="fas fa-stop"></i> Stop Detection
+                </button>
+                <button id="snapshot-btn" class="btn btn-secondary">
+                    <i class="fas fa-camera"></i> Take Snapshot
+                </button>
+                <button id="record-btn" class="btn btn-secondary">
+                    <i class="fas fa-record-vinyl"></i> Record
+                </button>
+            </div>
+
+            <!-- Settings Panel -->
+            <div class="settings-panel">
+                <h3>Detection Settings</h3>
+                <div class="setting-item">
+                    <label for="confidence-threshold">Confidence Threshold:</label>
+                    <input type="range" id="confidence-threshold" min="0" max="100" value="50">
+                    <span id="confidence-value">50%</span>
+                </div>
+                <div class="setting-item">
+                    <label for="nms-threshold">NMS Threshold:</label>
+                    <input type="range" id="nms-threshold" min="0" max="100" value="45">
+                    <span id="nms-value">0.45</span>
+                </div>
+                <div class="setting-item">
+                    <label>
+                        <input type="checkbox" id="show-fps" checked>
+                        Show FPS
+                    </label>
+                </div>
+                <div class="setting-item">
+                    <label>
+                        <input type="checkbox" id="show-labels" checked>
+                        Show Labels
+                    </label>
+                </div>
+                <div class="setting-item">
+                    <label>
+                        <input type="checkbox" id="show-confidence" checked>
+                        Show Confidence
+                    </label>
+                </div>
+            </div>
+
+            <!-- Real-time Stats -->
+            <div class="realtime-stats">
+                <h3>Live Statistics</h3>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <span class="stat-label">Objects Detected:</span>
+                        <span id="rt-objects" class="stat-value">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Processing Time:</span>
+                        <span id="rt-time" class="stat-value">0ms</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Frame Rate:</span>
+                        <span id="rt-fps" class="stat-value">0 FPS</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Frames Processed:</span>
+                        <span id="rt-frames" class="stat-value">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detection Log -->
+            <div class="detection-log">
+                <h3>Detection Log</h3>
+                <div id="log-container" class="log-container">
+                    <!-- Detection logs will appear here -->
+                </div>
+                <button class="btn btn-small" onclick="clearLog()">Clear Log</button>
+            </div>
+        </div>
+
+        <!-- Snapshots Gallery -->
+        <div class="snapshots-gallery">
+            <h2>Captured Snapshots</h2>
+            <div id="snapshots-grid" class="snapshots-grid">
+                <!-- Snapshots will appear here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Real-time detection JavaScript
+        let isDetecting = false;
+        let videoStream = null;
+        let frameCount = 0;
+        let lastTime = performance.now();
+        let fps = 0;
+
+        const video = document.getElementById('video-feed');
+        const canvas = document.getElementById('canvas-overlay');
+        const ctx = canvas.getContext('2d');
+        const startBtn = document.getElementById('start-btn');
+        const stopBtn = document.getElementById('stop-btn');
+        const snapshotBtn = document.getElementById('snapshot-btn');
+        const recordBtn = document.getElementById('record-btn');
+
+        // Initialize camera
+        async function initCamera() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    video: { width: 1280, height: 720 }
+                });
+                video.srcObject = stream;
+                videoStream = stream;
+                
+                video.onloadedmetadata = () => {
+                    canvas.width = video.videoWidth;
+                    canvas.height = video.videoHeight;
+                };
+            } catch (error) {
+                console.error('Camera initialization failed:', error);
+                alert('Unable to access camera. Please ensure camera permissions are granted.');
+            }
+        }
+
+        // Start detection
+        startBtn.addEventListener('click', () => {
+            isDetecting = true;
+            startBtn.disabled = true;
+            stopBtn.disabled = false;
+            detectFrame();
+        });
+
+        // Stop detection
+        stopBtn.addEventListener('click', () => {
+            isDetecting = false;
+            startBtn.disabled = false;
+            stopBtn.disabled = true;
+        });
+
+        // Detection loop
+        async function detectFrame() {
+            if (!isDetecting) return;
+
+            const startTime = performance.now();
+            
+            // Capture frame
+            const tempCanvas = document.createElement('canvas');
+            tempCanvas.width = video.videoWidth;
+            tempCanvas.height = video.videoHeight;
+            const tempCtx = tempCanvas.getContext('2d');
+            tempCtx.drawImage(video, 0, 0);
+            
+            // Send frame for detection
+            tempCanvas.toBlob(async (blob) => {
+                const formData = new FormData();
+                formData.append('frame', blob);
+                formData.append('model', document.getElementById('model-select-rt').value);
+                formData.append('confidence', document.getElementById('confidence-threshold').value / 100);
+                
+                try {
+                    const response = await fetch('/api/realtime-detect', {
+                        method: 'POST',
+                        body: formData
+                    });
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        drawDetections(data.detections);
+                        updateStats(data);
+                    }
+                } catch (error) {
+                    console.error('Detection error:', error);
+                }
+                
+                // Calculate FPS
+                frameCount++;
+                const currentTime = performance.now();
+                if (currentTime - lastTime >= 1000) {
+                    fps = frameCount;
+                    frameCount = 0;
+                    lastTime = currentTime;
+                    document.getElementById('fps-counter').textContent = `FPS: ${fps}`;
+                    document.getElementById('rt-fps').textContent = `${fps} FPS`;
+                }
+                
+                // Update processing time
+                const processingTime = performance.now() - startTime;
+                document.getElementById('rt-time').textContent = `${processingTime.toFixed(1)}ms`;
+                
+                // Continue detection loop
+                requestAnimationFrame(detectFrame);
+            }, 'image/jpeg', 0.8);
+        }
+
+        // Draw detections on canvas
+        function drawDetections(detections) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            const showLabels = document.getElementById('show-labels').checked;
+            const showConfidence = document.getElementById('show-confidence').checked;
+            
+            detections.forEach(det => {
+                // Draw bounding box
+                ctx.strokeStyle = det.color || '#00FF00';
+                ctx.lineWidth = 2;
+                ctx.strokeRect(det.x, det.y, det.width, det.height);
+                
+                // Draw label and confidence
+                if (showLabels || showConfidence) {
+                    ctx.fillStyle = det.color || '#00FF00';
+                    ctx.fillRect(det.x, det.y - 25, det.width, 25);
+                    
+                    ctx.fillStyle = '#FFFFFF';
+                    ctx.font = '14px Arial';
+                    
+                    let label = '';
+                    if (showLabels) label += det.class;
+                    if (showLabels && showConfidence) label += ': ';
+                    if (showConfidence) label += `${(det.confidence * 100).toFixed(1)}%`;
+                    
+                    ctx.fillText(label, det.x + 5, det.y - 7);
+                }
+            });
+            
+            // Update object count
+            document.getElementById('rt-objects').textContent = detections.length;
+        }
+
+        // Update statistics
+        function updateStats(data) {
+            document.getElementById('rt-frames').textContent = 
+                parseInt(document.getElementById('rt-frames').textContent) + 1;
+            
+            // Add to detection log
+            if (data.detections.length > 0) {
+                addToLog(data.detections);
+            }
+        }
+
+        // Add to detection log
+        function addToLog(detections) {
+            const logContainer = document.getElementById('log-container');
+            const timestamp = new Date().toLocaleTimeString();
+            
+            const logEntry = document.createElement('div');
+            logEntry.className = 'log-entry';
+            logEntry.innerHTML = `
+                <span class="log-time">${timestamp}</span>
+                <span class="log-message">Detected ${detections.length} object(s): 
+                    ${detections.map(d => d.class).join(', ')}</span>
+            `;
+            
+            logContainer.insertBefore(logEntry, logContainer.firstChild);
+            
+            // Keep only last 50 entries
+            while (logContainer.children.length > 50) {
+                logContainer.removeChild(logContainer.lastChild);
+            }
+        }
+
+        // Clear log
+        function clearLog() {
+            document.getElementById('log-container').innerHTML = '';
+        }
+
+        // Take snapshot
+        snapshotBtn.addEventListener('click', () => {
+            const snapshotCanvas = document.createElement('canvas');
+            snapshotCanvas.width = video.videoWidth;
+            snapshotCanvas.height = video.videoHeight;
+            const snapshotCtx = snapshotCanvas.getContext('2d');
+            
+            // Draw video frame
+            snapshotCtx.drawImage(video, 0, 0);
+            // Draw detection overlay
+            snapshotCtx.drawImage(canvas, 0, 0);
+            
+            // Add to gallery
+            const img = document.createElement('img');
+            img.src = snapshotCanvas.toDataURL();
+            img.className = 'snapshot-thumb';
+            img.onclick = () => window.open(img.src);
+            
+            const grid = document.getElementById('snapshots-grid');
+            grid.insertBefore(img, grid.firstChild);
+        });
+
+        // Confidence threshold slider
+        document.getElementById('confidence-threshold').addEventListener('input', (e) => {
+            document.getElementById('confidence-value').textContent = `${e.target.value}%`;
+        });
+
+        // NMS threshold slider
+        document.getElementById('nms-threshold').addEventListener('input', (e) => {
+            document.getElementById('nms-value').textContent = (e.target.value / 100).toFixed(2);
+        });
+
+        // Initialize on load
+        window.addEventListener('load', () => {
+            initCamera();
+        });
+
+        // Cleanup on unload
+        window.addEventListener('beforeunload', () => {
+            if (videoStream) {
+                videoStream.getTracks().forEach(track => track.stop());
+            }
+        });
+    </script>
+</body>
+</html>
