@@ -1,0 +1,11 @@
+date,product_id,product_name,quantity,price,customer_id,region,payment_method
+2024-01-01,PROD_1001,Laptop,2,999.99,CUST_10001,north,credit_card
+2024-01-01,PROD_2001,Phone,1,699.99,CUST_10002,south,debit_card
+2024-01-01,PROD_3001,Tablet,3,399.99,CUST_10003,east,paypal
+2024-01-01,PROD_4001,Headphones,5,149.99,CUST_10004,west,credit_card
+2024-01-01,PROD_5001,Smartwatch,2,299.99,CUST_10005,central,cash
+2024-01-02,PROD_1001,Laptop,1,999.99,CUST_10006,north,credit_card
+2024-01-02,PROD_2001,Phone,4,699.99,CUST_10007,south,paypal
+2024-01-02,PROD_3001,Tablet,2,399.99,CUST_10008,east,debit_card
+2024-01-02,PROD_4001,Headphones,3,149.99,CUST_10009,west,credit_card
+2024-01-02,PROD_5001,Smartwatch,1,299.99,CUST_10010,central,cash
