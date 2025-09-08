@@ -1,0 +1,548 @@
+/* Global Styles */
+:root {
+    --primary-color: #e74c3c;
+    --secondary-color: #3498db;
+    --success-color: #27ae60;
+    --warning-color: #f39c12;
+    --danger-color: #c0392b;
+    --dark-color: #2c3e50;
+    --light-color: #ecf0f1;
+    --border-radius: 12px;
+    --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: var(--dark-color);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Header Styles */
+.header {
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    margin-bottom: 30px;
+    overflow: hidden;
+}
+
+.header-content {
+    padding: 30px;
+    text-align: center;
+    background: linear-gradient(135deg, var(--primary-color), var(--danger-color));
+    color: white;
+}
+
+.header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.header p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+/* Main Content */
+.main-content, .results-content {
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 30px;
+    margin-bottom: 30px;
+}
+
+/* Info Section */
+.info-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.info-card {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    padding: 25px;
+    border-radius: var(--border-radius);
+    text-align: center;
+    transition: var(--transition);
+}
+
+.info-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+}
+
+.info-card i {
+    font-size: 3rem;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+}
+
+.info-card h3 {
+    color: var(--dark-color);
+    margin-bottom: 10px;
+}
+
+/* Form Section */
+.form-section {
+    margin-bottom: 40px;
+}
+
+.form-section h2 {
+    color: var(--dark-color);
+    margin-bottom: 30px;
+    text-align: center;
+    font-size: 2rem;
+}
+
+.form-group-section {
+    background: #f8f9fa;
+    padding: 25px;
+    border-radius: var(--border-radius);
+    margin-bottom: 25px;
+}
+
+.form-group-section h3 {
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--dark-color);
+}
+
+.form-group input,
+.form-group select {
+    padding: 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: var(--transition);
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+}
+
+.form-group small {
+    color: #666;
+    margin-top: 5px;
+    font-size: 0.9rem;
+}
+
+.checkbox-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+}
+
+.checkbox-group label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-weight: normal;
+}
+
+.checkbox-group input[type="checkbox"] {
+    margin-right: 10px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+/* Buttons */
+.form-actions {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.btn {
+    padding: 15px 40px;
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-color), var(--danger-color));
+    color: white;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(231, 76, 60, 0.3);
+}
+
+.btn-secondary {
+    background: var(--secondary-color);
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #2980b9;
+    transform: translateY(-2px);
+}
+
+/* Results Page Styles */
+.risk-score-section {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.risk-meter {
+    margin: 30px auto;
+    max-width: 500px;
+}
+
+.risk-gauge {
+    background: #e0e0e0;
+    height: 40px;
+    border-radius: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.gauge-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--success-color), var(--warning-color), var(--danger-color));
+    transition: width 1s ease;
+}
+
+.gauge-label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.risk-percentage {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+.risk-text {
+    font-size: 0.9rem;
+    color: white;
+}
+
+.risk-category {
+    padding: 25px;
+    border-radius: var(--border-radius);
+    margin: 30px auto;
+    max-width: 600px;
+}
+
+.risk-category.low-risk {
+    background: linear-gradient(135deg, #d4edda, #c3e6cb);
+    color: #155724;
+    border: 2px solid #28a745;
+}
+
+.risk-category.high-risk {
+    background: linear-gradient(135deg, #f8d7da, #f5c6cb);
+    color: #721c24;
+    border: 2px solid #dc3545;
+}
+
+.risk-category i {
+    font-size: 3rem;
+    margin-bottom: 15px;
+}
+
+/* Risk Factors Grid */
+.risk-factors-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin: 30px 0;
+}
+
+.factor-card {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: var(--border-radius);
+    text-align: center;
+    border: 2px solid #e0e0e0;
+}
+
+.factor-card i {
+    font-size: 2rem;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+}
+
+.factor-impact {
+    margin-top: 10px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.factor-impact.low {
+    background: #d4edda;
+    color: #155724;
+}
+
+.factor-impact.medium {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.factor-impact.high {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+/* Recommendations */
+.recommendations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin: 30px 0;
+}
+
+.recommendation-card {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    padding: 25px;
+    border-radius: var(--border-radius);
+}
+
+.recommendation-card i {
+    font-size: 2rem;
+    color: var(--secondary-color);
+    margin-bottom: 15px;
+}
+
+.recommendation-card h4 {
+    color: var(--dark-color);
+    margin-bottom: 15px;
+}
+
+.recommendation-card ul {
+    list-style: none;
+    padding: 0;
+}
+
+.recommendation-card li {
+    padding: 8px 0;
+    padding-left: 25px;
+    position: relative;
+}
+
+.recommendation-card li:before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+/* Alert */
+.alert {
+    padding: 15px 20px;
+    border-radius: var(--border-radius);
+    margin: 20px 0;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.alert-warning {
+    background: #fff3cd;
+    color: #856404;
+    border: 2px solid #ffc107;
+}
+
+/* Chart Container */
+.chart-container {
+    margin: 30px 0;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: var(--border-radius);
+}
+
+.chart-container h4 {
+    margin-bottom: 20px;
+    color: var(--dark-color);
+}
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin: 40px 0;
+    flex-wrap: wrap;
+}
+
+/* Disclaimer */
+.disclaimer {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: var(--border-radius);
+    border-left: 5px solid var(--warning-color);
+    margin: 30px 0;
+}
+
+.disclaimer h4 {
+    color: var(--dark-color);
+    margin-bottom: 10px;
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    padding: 20px;
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    margin-top: 30px;
+}
+
+.footer p {
+    color: #666;
+    margin: 5px 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+    
+    .header h1 {
+        font-size: 1.8rem;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .info-section {
+        grid-template-columns: 1fr;
+    }
+    
+    .risk-factors-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .recommendations-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+
+/* Loading Spinner */
+.loading {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+}
+
+.loading.active {
+    display: flex;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Print Styles */
+@media print {
+    body {
+        background: white;
+    }
+    
+    .header, .footer {
+        background: white;
+        color: black;
+    }
+    
+    .action-buttons {
+        display: none;
+    }
+    
+    .container {
+        max-width: 100%;
+    }
+}
