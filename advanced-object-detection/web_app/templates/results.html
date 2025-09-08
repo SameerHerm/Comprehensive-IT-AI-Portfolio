@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detection Results - Object Detection System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Detection Results</h1>
+            <a href="/" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back to Upload
+            </a>
+        </div>
+
+        <!-- Results Summary -->
+        <div class="results-summary">
+            <h2>Summary</h2>
+            <div class="summary-grid">
+                <div class="summary-item">
+                    <span class="label">Image:</span>
+                    <span class="value">{{ image_name }}</span>
+                </div>
+                <div class="summary-item">
+                    <span class="label">Model Used:</span>
+                    <span class="value">{{ model_name }}</span>
+                </div>
+                <div class="summary-item">
+                    <span class="label">Processing Time:</span>
+                    <span class="value">{{ processing_time }}ms</span>
+                </div>
+                <div class="summary-item">
+                    <span class="label">Total Objects:</span>
+                    <span class="value">{{ total_objects }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Annotated Image -->
+        <div class="annotated-image-section">
+            <h2>Annotated Image</h2>
+            <div class="image-viewer">
+                <img src="{{ annotated_image_url }}" alt="Annotated Image" class="result-image">
+                <div class="image-controls">
+                    <button onclick="zoomIn()" class="btn btn-small">
+                        <i class="fas fa-search-plus"></i>
+                    </button>
+                    <button onclick="zoomOut()" class="btn btn-small">
+                        <i class="fas fa-search-minus"></i>
+                    </button>
+                    <button onclick="resetZoom()" class="btn btn-small">
+                        <i class="fas fa-compress"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detailed Results Table -->
+        <div class="results-table-section">
+            <h2>Detection Details</h2>
+            <table class="results-table">
+                <thead>
+                    <tr>
+                        <th>Object ID</th>
+                        <th>Class</th>
+                        <th>Confidence</th>
+                        <th>Bounding Box</th>
+                        <th>Area</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for detection in detections %}
+                    <tr>
+                        <td>{{ detection.id }}</td>
+                        <td>
+                            <span class="class-badge" style="background-color: {{ detection.color }}">
+                                {{ detection.class }}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="confidence-cell">
+                                <div class="confidence-bar-small">
+                                    <div class="confidence-fill" style="width: {{ detection.confidence * 100 }}%"></div>
+                                </div>
+                                <span>{{ "%.1f"|format(detection.confidence * 100) }}%</span>
+                            </div>
+                        </td>
+                        <td>
+                            <code>[{{ detection.bbox|join(', ') }}]</code>
+                        </td>
+                        <td>{{ detection.area }} px²</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Class Distribution Chart -->
+        <div class="charts-section">
+            <h2>Class Distribution</h2>
+            <div class="chart-container">
+                <canvas id="class-distribution-chart"></canvas>
+            </div>
+        </div>
+
+        <!-- Export Section -->
+        <div class="export-section">
+            <h2>Export Results</h2>
+            <div class="export-buttons">
+                <form action="/export/{{ result_id }}" method="post">
+                    <input type="hidden" name="format" value="json">
+                    <button type="submit" class="btn btn-secondary">
+                        <i class="fas fa-file-code"></i> Export as JSON
+                    </button>
+                </form>
+                <form action="/export/{{ result_id }}" method="post">
+                    <input type="hidden" name="format" value="csv">
+                    <button type="submit" class="btn btn-secondary">
+                        <i class="fas fa-file-csv"></i> Export as CSV
+                    </button>
+                </form>
+                <form action="/export/{{ result_id }}" method="post">
+                    <input type="hidden" name="format" value="xml">
+                    <button type="submit" class="btn btn-secondary">
+                        <i class="fas fa-file-code"></i> Export as XML
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Image zoom functionality
+        let currentZoom = 1;
+        
+        function zoomIn() {
+            currentZoom += 0.2;
+            applyZoom();
+        }
+        
+        function zoomOut() {
+            currentZoom = Math.max(0.5, currentZoom - 0.2);
+            applyZoom();
+        }
+        
+        function resetZoom() {
+            currentZoom = 1;
+            applyZoom();
+        }
+        
+        function applyZoom() {
+            const img = document.querySelector('.result-image');
+            img.style.transform = `scale(${currentZoom})`;
+        }
+        
+        // Class distribution chart
+        const ctx = document.getElementById('class-distribution-chart').getContext('2d');
+        const classData = {{ class_distribution | tojson }};
+        
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: Object.keys(classData),
+                datasets: [{
+                    data: Object.values(classData),
+                    backgroundColor: [
+                        '#FF6384',
+                        '#36A2EB',
+                        '#FFCE56',
+                        '#4BC0C0',
+                        '#9966FF',
+                        '#FF9F40'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right'
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
