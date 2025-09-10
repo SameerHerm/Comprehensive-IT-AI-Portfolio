@@ -29,8 +29,6 @@ Projects are modular, scalable, and well-documented for technical presentations 
 | 2  | Deep Learning             | Real-Time Face Mask Detector       | TensorFlow, Flask, OpenCV           |
 | 3  | NLP                       | Spam & Sentiment Analyzer          | NLTK, LSTM, Flask                   |
 | 4  | Data Engineering          | ETL Pipeline with Kafka            | Kafka, Docker, PostgreSQL           |
-| 5  | DevOps/Cloud              | Terraform & Docker Automation      | Terraform, Docker, Kubernetes        |
-| 6  | Banking ML/AI             | Fraud Detection App                | Kafka, XGBoost, Flask, Docker, SHAP |
 
 ---
 
@@ -56,16 +54,6 @@ Data engineering pipeline for ingesting, transforming, and storing financial/spo
 - Kafka for streaming, Docker for isolated services, PostgreSQL for persistent analytics.
 - Real-time and batch processing.
 
-### 5. Terraform & Docker Automation
-DevOps suite for automated cloud resource provisioning and CI/CD deployment.
-- Infrastructure as Code (Terraform), container orchestration (Docker, Kubernetes), auto-scaling.
-- Cloud-provider agnostic scripts.
-
-### 6. Banking Fraud Detection App
-AI application for real-time fraud detection and prevention in banking transactions.
-- Real-time ingestion (Kafka), advanced ML (Random Forest, Isolation Forest, XGBoost), SHAP for explainability.
-- Flask dashboard for alerts, Docker/Terraform cloud deployment, compliance-ready logging.
-- End-to-end workflow with simulation, deployment scripts, and dashboards.
 
 
 ---
