@@ -2,7 +2,7 @@
 
 Repository: https://github.com/SameerHerm/Comprehensive-IT-AI-Portfolio
 
-This monorepo showcases four production‑ready projects across Machine Learning, Computer Vision, NLP, and Data Engineering. Each project is modular, reproducible, and includes APIs/UI where relevant.
+This portfolio showcases four production‑ready projects across Machine Learning, Computer Vision, NLP, and Data Engineering. Each project is modular, reproducible, and includes APIs/UI where relevant.
 
 - Cardiovascular Risk Prediction System (ML + Explainability + Streamlit + Flask + Docker)
 - Advanced Object Detection System (YOLOv8/Faster R‑CNN/SSD/EfficientDet + Real-time + API + Web)
