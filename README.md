@@ -108,7 +108,7 @@ This portfolio demonstrates **end-to-end AI/ML expertise** through four comprehe
 </details>
 
 ### ⚡ Rapid Setup
-```bash
+
 # 🚀 Clone the repository
 git clone https://github.com/SameerHerm/Comprehensive-IT-AI-Portfolio.git
 cd Comprehensive-IT-AI-Portfolio
@@ -125,6 +125,7 @@ pip install -r requirements.txt
 streamlit run app.py  # For web interface
 # OR
 python api.py         # For REST API
+
 🐳 Docker Quick Launch
 bash# 🚀 One-command deployment
 docker-compose up -d
@@ -132,6 +133,7 @@ docker-compose up -d
 # 🌐 Access applications
 # Web UI: http://localhost:8501
 # API: http://localhost:8000/docs
+
 💼 Featured Projects
 🩺 Cardiovascular Risk Prediction System
 
@@ -156,7 +158,7 @@ API: Flask for REST service
 Deployment: Docker for containerization
 
 🚀 Quick Launch
-bashcd "Cardiovascular Risk Prediction project"
+cd "Cardiovascular Risk Prediction project"
 pip install -r requirements.txt
 
 # 🌐 Web Interface
@@ -167,6 +169,7 @@ python src/prediction_api.py
 
 # 🧪 Run Tests
 pytest tests/ -v --cov=src
+
 📊 API Usage Example
 jsonPOST /predict
 {
@@ -209,7 +212,7 @@ Optimization: ONNX for cross-platform deployment
 Monitoring: TensorBoard for training visualization
 
 🚀 Quick Launch
-bashcd advanced-object-detection
+cd advanced-object-detection
 pip install -r requirements.txt
 
 # 🎯 Single Image Detection
@@ -223,8 +226,15 @@ streamlit run web_app/app.py
 
 # 🔌 API Service
 uvicorn api:app --host 0.0.0.0 --port 8000
-📊 Performance Comparison
-ModelSpeed (FPS)mAP@0.5ParametersUse CaseYOLOv8n14237.3%3.2M🏃 Real-time, MobileYOLOv8s9644.9%11.2M⚖️ BalancedYOLOv8m5950.2%25.9M🎯 High AccuracyFaster R-CNN2353.1%41.8M🏆 Maximum Precision
+
+### 📊 **Performance Comparison**
+
+| Model | Speed (FPS) | mAP@0.5 | Parameters | Use Case |
+|-------|-------------|---------|------------|----------|
+| YOLOv8n | **142** | 37.3% | 3.2M | 🏃 Real-time, Mobile |
+| YOLOv8s | 96 | 44.9% | 11.2M | ⚖️ Balanced |
+| YOLOv8m | 59 | 50.2% | 25.9M | 🎯 High Accuracy |
+| Faster R-CNN | 23 | **53.1%** | 41.8M | 🏆 Maximum Precision |
 
 🔄 Enhanced ETL Data Pipeline
 
@@ -243,6 +253,7 @@ ModelSpeed (FPS)mAP@0.5ParametersUse CaseYOLOv8n14237.3%3.2M🏃 Real-time, Mobi
 📥 Data Sources → 🔄 Kafka → 🎯 Airflow → 🏭 Transformation → 💾 Data Warehouse
                     ↓           ↓            ↓              ↓
                📊 Monitoring → 🔍 Quality → 🚨 Alerting → 📈 Analytics
+
 🛠️ Technology Stack
 
 Orchestration: Apache Airflow for workflow management
@@ -254,7 +265,7 @@ Visualization: Grafana for monitoring dashboards
 Database: PostgreSQL for data storage
 
 🚀 Quick Launch
-bashcd etl-pipeline-enhanced
+cd etl-pipeline-enhanced
 
 # 🐳 Full Stack Deployment
 docker-compose up -d
@@ -268,6 +279,7 @@ bash scripts/producer.sh
 
 # 🎯 Trigger Pipeline
 python scripts/trigger_dag.py --dag etl_main
+
 📊 Monitoring Dashboard
 
 📈 Throughput: Messages/second, Processing rate
@@ -298,10 +310,15 @@ Frontend: Streamlit for interactive dashboard
 Testing: pytest for comprehensive test coverage
 Deployment: Docker for containerized deployment
 
-📊 Performance Results
-<div align="center">
-ModelAccuracyPrecisionRecallF1-ScoreSpeedXGBoost98.9%99.0%98.8%98.9%FastSVM98.5%98.7%98.3%98.5%MediumRandom Forest98.2%98.4%98.0%98.2%FastNaive Bayes97.8%98.2%97.5%97.8%Very Fast
-</div>
+### 📊 **Performance Results**
+
+| Model | Accuracy | Precision | Recall | F1-Score | Speed |
+|-------|----------|-----------|--------|----------|-------|
+| **XGBoost** | **98.9%** | **99.0%** | **98.8%** | **98.9%** | Fast |
+| SVM | 98.5% | 98.7% | 98.3% | 98.5% | Medium |
+| Random Forest | 98.2% | 98.4% | 98.0% | 98.2% | Fast |
+| Naive Bayes | 97.8% | 98.2% | 97.5% | 97.8% | Very Fast |
+
 🚀 Quick Launch
 bashcd spam-classifier-enhanced
 pip install -r requirements.txt
@@ -360,18 +377,24 @@ CI/CD: GitHub Actions, Jenkins, GitLab CI
 Cloud: AWS, GCP, Azure (deployment ready)
 
 📊 Performance Metrics
-🏆 Model Performance Summary
-<div align="center">
-ProjectBest ModelAccuracyLatencyThroughput🩺 CardiovascularXGBoost94.2%12ms500 req/s👁️ Object DetectionYOLOv8m50.2% mAP17ms59 FPS🔄 ETL Pipeline-99.9% uptime<100ms10k msg/s📧 Spam ClassifierXGBoost98.9%8ms800 req/s
-</div>
+### 🏆 **Model Performance Summary**
+
+| Project | Best Model | Accuracy | Latency | Throughput |
+|---------|------------|----------|---------|------------|
+| 🩺 Cardiovascular | XGBoost | **94.2%** | 12ms | 500 req/s |
+| 👁️ Object Detection | YOLOv8m | **50.2% mAP** | 17ms | 59 FPS |
+| 🔄 ETL Pipeline | - | **99.9% uptime** | <100ms | 10k msg/s |
+| 📧 Spam Classifier | XGBoost | **98.9%** | 8ms | 800 req/s |
+
 🐳 Docker Deployment
 🚀 Single Command Deployment
-bash# 🎯 Individual Project
+# 🎯 Individual Project
 cd [project-directory]
 docker-compose up -d
 
 # 🌐 Full Portfolio (if configured)
 docker-compose -f docker-compose.portfolio.yml up -d
+
 📊 Container Architecture
 yamlservices:
   web:        # Streamlit/FastAPI interface
@@ -381,9 +404,10 @@ yamlservices:
   redis:      # Caching layer
   kafka:      # Message streaming (ETL)
   airflow:    # Workflow orchestration
+  
 🧪 Testing & Quality Assurance
 ✅ Comprehensive Testing Strategy
-bash# 🧪 Unit Tests
+# 🧪 Unit Tests
 pytest tests/unit/ -v --cov=src --cov-report=html
 
 # 🔗 Integration Tests  
@@ -396,6 +420,7 @@ pytest tests/performance/ --benchmark-only
 flake8 src/
 black src/
 mypy src/
+
 📊 Quality Metrics
 
 📈 Code Coverage: >85% across all projects
@@ -423,8 +448,9 @@ mypy src/
 
 🤝 Contributing
 We welcome contributions! Please see our Contributing Guidelines for details.
+
 🚀 Quick Contribution Setup
-bash# 🍴 Fork and clone
+# 🍴 Fork and clone
 git clone https://github.com/your-username/Comprehensive-IT-AI-Portfolio.git
 cd Comprehensive-IT-AI-Portfolio
 
