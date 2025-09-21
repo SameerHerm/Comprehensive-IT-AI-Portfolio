@@ -20,7 +20,7 @@
 
 ## Table of Contents
 - [Overview](#overview)
-- [Repository Structure](# 🎯 Portfolio Overview)
+- [Repository Structure](#repository-structure)
 - [Quick Start](#quick-start)
 - [Projects](#projects)
   - [Cardiovascular Risk Prediction System](#cardiovascular-risk-prediction-system)
