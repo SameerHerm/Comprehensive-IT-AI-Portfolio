@@ -20,7 +20,7 @@
 
 ## Table of Contents
 - [Overview](#overview)
-- [Repository Structure](#repository-structure)
+- [Repository Structure](# 🎯 Portfolio Overview)
 - [Quick Start](#quick-start)
 - [Projects](#projects)
   - [Cardiovascular Risk Prediction System](#cardiovascular-risk-prediction-system)
@@ -31,7 +31,7 @@
 - [License](#license)
 - [Contact](#contact)
 
-## 🎯 Portfolio Overview
+## Overview
 
 This portfolio demonstrates **end-to-end AI/ML expertise** through four comprehensive, production-ready projects spanning:
 
@@ -58,7 +58,7 @@ This portfolio demonstrates **end-to-end AI/ML expertise** through four comprehe
 
 </div>
 
-## 🏗️ Repository Architecture
+## Repository Structure
 
 ```
 projects/
