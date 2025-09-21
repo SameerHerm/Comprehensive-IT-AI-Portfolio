@@ -60,7 +60,6 @@ This portfolio demonstrates **end-to-end AI/ML expertise** through four comprehe
 
 ## 🏗️ Repository Architecture
 
-## Repository Structure
 ```
 projects/
   cardio-risk/
